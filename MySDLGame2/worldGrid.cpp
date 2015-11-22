@@ -1,19 +1,25 @@
 #include "worldGrid.h"
 #include "grassTile.h" // for the useDefaultGrid
+#include "tileService.h"
 #include <iostream>
 #include <fstream>
 
 
-using namespace std;
-
 worldGrid::worldGrid(serviceLocator* SL)
 {
 	mySL = SL;
-	state = randomGen;
+	if (mySL == NULL)
+	{
+		std::cout << "Service Locator is NULL in WorldGrid" << std::endl;
+		SDL_Delay(5000);
+	}
+	chunk tempChunk(mySL, 0, 0);
+	chunkSize = tempChunk.chunkSize;
 }
 
 bool worldGrid::setServiceLocator(serviceLocator* SL)
 {
+	std::cout << "setServiceLocator Called" << std::endl;
 	mySL = SL;
 	if (mySL != NULL)
 	{
@@ -27,106 +33,144 @@ bool worldGrid::setServiceLocator(serviceLocator* SL)
 
 bool worldGrid::placeBlock(int x, int y, int type)//if false, the player class will try to right click the block
 {
+	if (x > (gridWidth * 10) * 20 || y > (gridHeight * 10) * 20)
+	{
+		return false;
+	}
+
 	x -= mySL->globalRenderer.xOffset;
 	y -= mySL->globalRenderer.yOffset;
-
+	
 	x /= mySL->tileWidth;
 	y /= mySL->tileHeight;
-	
-		if (blockGrid[x][y] == NULL)//if ther isn't a block where the player wants to place one
-		{
-			blockGrid[x][y] = mySL->myBlockService->blocks[type];
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	
+
+	int chunkX, chunkY;
+
+	chunkX = x / chunkSize;
+	chunkY = y / chunkSize;
+
+	x -= chunkGrid[chunkX][chunkY]->chunkRect.x / mySL->tileWidth;
+	y -= chunkGrid[chunkX][chunkY]->chunkRect.y / mySL->tileHeight;
+
+
+	return chunkGrid[chunkX][chunkY]->placeBlock(x, y, type);
 }
 
 bool worldGrid::breakBlock(int x, int y)
 {
+	if (x > (gridWidth * 10) * 20 || y > (gridHeight * 10) * 20)
+	{
+		return false;
+	}
+
+	//chunkX = x / chunkSize <- find the chunk
+
 	x -= mySL->globalRenderer.xOffset;
 	y -= mySL->globalRenderer.yOffset;
 
 	x /= mySL->tileWidth;
 	y /= mySL->tileHeight;
 
-	//chunkX = x / chunkSize <- find the chunk
+	int chunkX, chunkY;
 
-	//x -= chunkSize * (chunkX)<- find the block relative to the chunk
+	chunkX = x / chunkSize;
+	chunkY = y / chunkSize;
 
-	if (blockGrid[x][y] != NULL)
+	x -= chunkGrid[chunkX][chunkY]->chunkRect.x / mySL->tileWidth;
+	y -= chunkGrid[chunkX][chunkY]->chunkRect.y / mySL->tileHeight;
+
+	if (x < 0 || x > 9 || y < 0 || y > 9)
 	{
-			blockGrid[x][y] = NULL;
-		return true;
-	}
-	else
-	{
+		std::cout << "[ERROR]: Incorrect positioning data from WorldGrid::breakBlock" << std::endl;
 		return false;
 	}
+
+	return chunkGrid[chunkX][chunkY]->breakBlock(x, y);
+	//return false;
 }
 
 bool worldGrid::leftClickBlock(int x, int y)
 {
+	if (x > (gridWidth * 10) * 20 || y > (gridHeight * 10) * 20)
+	{
+		return false;
+	}
+
 	x -= mySL->globalRenderer.xOffset;
 	y -= mySL->globalRenderer.yOffset;
 
 	x /= mySL->tileWidth;
 	y /= mySL->tileHeight;
 
-	return blockGrid[x][y]->onLeftClick();
+	int chunkX, chunkY;
+
+	chunkX = x / chunkSize;
+	chunkY = y / chunkSize;
+
+	x -= chunkGrid[chunkX][chunkY]->chunkRect.x / mySL->tileWidth;
+	y -= chunkGrid[chunkX][chunkY]->chunkRect.y / mySL->tileHeight;
+
+	return chunkGrid[chunkX][chunkY]->leftClickBlock(x, y);
 }
 
 bool worldGrid::rightClickBlock(int x, int y)
 {
+
+	if (x > (gridWidth * 10) * 20 || y > (gridHeight * 10) * 20)
+	{
+		return false;
+	}
+
 	x -= mySL->globalRenderer.xOffset;
 	y -= mySL->globalRenderer.yOffset;
 
 	x /= mySL->tileWidth;
 	y /= mySL->tileHeight;
 
-	return blockGrid[x][y]->onRightClick();
+	int chunkX, chunkY;
+
+	chunkX = x / chunkSize;
+	chunkY = y / chunkSize;
+
+	x -= chunkGrid[chunkX][chunkY]->chunkRect.x / mySL->tileWidth;
+	y -= chunkGrid[chunkX][chunkY]->chunkRect.y / mySL->tileHeight;
+
+	return chunkGrid[chunkX][chunkY]->rightClickBlock(x, y);
 }
 
 
 void worldGrid::draw() // if the tile/block is on the screen, draw it
 {
 	//i = x, j = y
-	for (Uint16 i = 0; i <= gridWidth; i++)
+	for (int i = 0; i < int(chunkGrid.size()); i++)
 	{
-		for (Uint16 j = 0; j <= gridHeight; j++)
+		for (int j = 0; j < int(chunkGrid[i].size()); j++)
 		{
-			baseGrid[i][j]->draw(i*mySL->tileWidth, j*mySL->tileHeight);
-			if (blockGrid[i][j] != NULL)
-			{
-				blockGrid[i][j]->draw(i * mySL->tileWidth, j * mySL->tileHeight);
-			}
 			
-			//std::cout << "drawn " << i << " " << j << std::endl;
+			if (chunkGrid[i][j] != NULL) //if there is a chunk there, draw it
+				chunkGrid[i][j]->draw();
 		}
 	}
 }
 
 bool worldGrid::loadGridFromText(std::string path)
 {
-	ifstream baseGridFile;
+	std::ifstream baseGridFile;
 	baseGridFile.open(path);
 	if (!baseGridFile.is_open())
 	{
-		cout << "[ERROR]: File " << path << " couldn't be opened. Maby it doesn't exist." << endl;
+		std::cout << "[ERROR]: File " << path << " couldn't be opened. Maby it doesn't exist." << std::endl;
 		return false;
 	}
 	else
 	{
-	string sW, sH;
+	std::string sW, sH;
 		getline(baseGridFile, sW);
 		getline(baseGridFile, sH);
 
 		if (sW == "" || sH == "")
 		{
-			cout << "[ERROR]: File " << path << " width or height is missing. could not load baseGrid." << endl;
+			std::cout << "[ERROR]: File " << path << " width or height is missing. could not load baseGrid." << std::endl;
 			return false;
 		}
 		else
@@ -146,36 +190,49 @@ bool worldGrid::loadGridFromText(std::string path)
 	}
 }
 
-bool worldGrid::useDefaultGrid()
+bool worldGrid::useDefaultGrid() //for testing purposes
 {
-	const int width = 100;
-	const int height = 100;
-
-	state = preset;
+	const int width = 5;
+	const int height = 5;
 
 	//instantiate the 2D vector
 	//i = x, j = y
-	for (int i = 0; i <= height; i++)
+	for (int i = 0; i < height; i++)
 	{
-		vector<tile* > tempTiles;
-		vector<block* > tempBlocks;
-		for (int j = 0; j <= width; j++)
+		std::vector<chunk* > tempChunks;
+		for (int j = 0; j < width; j++)
 		{
-			tile* tempTile = new tile(mySL);
-			//block* tempBlock = new block(mySL);
-			tempTiles.push_back(tempTile);
-			tempBlocks.push_back(NULL);
+			chunk* tempChunk = new chunk(mySL, i, j);
+			tempChunks.push_back(tempChunk);
 		}
-		baseGrid.push_back(tempTiles);
-		blockGrid.push_back(tempBlocks);
+		chunkGrid.push_back(tempChunks);
 	}
 
-	//setup the base grid
-	for (int i = 0; i <= height; i++)
+	//setup the chunk grid
+	for (int i = 0; i < height; i++)
 	{
-		for (int j = 0; j <= width; j++)
+		for (int j = 0; j < width; j++)
 		{
-			baseGrid[i][j] = new grassTile(mySL);
+			for (int x = 0; x < 10; x++)
+			{
+				for (int y = 0; y < 10; y++)
+				{
+					bool success = chunkGrid[i][j]->loadTile(mySL->myTileService->grass, x, y);
+
+					if (success == false)
+					{
+						return false;
+					}
+
+					success = chunkGrid[i][j]->loadBlock(mySL->myBlockService->air, x, y);
+
+					if (success == false)
+					{
+						return false;
+					}
+
+				}
+			}
 		}
 	}
 
@@ -185,4 +242,11 @@ bool worldGrid::useDefaultGrid()
 
 worldGrid::~worldGrid()
 {
+	for (int i = 0; i < int(chunkGrid.size()); i++)
+	{
+		for (int j = 0; j < int(chunkGrid[i].size()); j++)
+		{
+			delete chunkGrid[i][j];
+		}
+	}
 }

@@ -9,8 +9,8 @@ public:
 	void drawCurrentGrid();
 	~world();
 
-	worldGrid mainWorld;
-	std::vector<worldGrid> otherGrids;
+	worldGrid* mainGrid;
+	std::vector<worldGrid* > otherGrids;
 	int currentGrid = -1;
 private:
 	serviceLocator* mySL;

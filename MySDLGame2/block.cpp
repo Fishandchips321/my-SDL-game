@@ -4,14 +4,23 @@
 block::block(serviceLocator* SL)
 	:mySL(SL)
 {
+	surface = mySL->myImageService.loadImageReturn("assets/Textures/missing texture.png");
 }
 
 void block::draw(int x, int y)
 {
 	drawRect.x = x + mySL->globalRenderer.xOffset;
 	drawRect.y = y + mySL->globalRenderer.yOffset;
+	drawRect.w = blockWidth;
+	drawRect.h = blockHeight;
 
-	mySL->globalRenderer.drawSurface(surface, drawRect);
+	if (drawRect.x + drawRect.w > 0 && drawRect.x < mySL->globalRenderer.screenWidth)
+	{
+		if (drawRect.y + drawRect.h > 0 && drawRect.y < mySL->globalRenderer.screenHeight)
+		{
+			mySL->globalRenderer.drawSurface(surface, drawRect);
+		}
+	}
 }
 
 void block::update()

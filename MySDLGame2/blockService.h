@@ -15,7 +15,7 @@ public:
 
 	enum blockType// <- for testing purposes. to be removed after inventory is fully implemented
 	{
-		none,
+		air,
 		test,
 		wood,
 		stone,

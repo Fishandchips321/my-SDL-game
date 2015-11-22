@@ -11,7 +11,9 @@ class blockService;
 class worldService;
 class playerService;
 class inventoryService;
+class tileService;
 class UI;
+//todo: change all services into void* and have main setup serviceInterface
 class serviceLocator
 {
 public:
@@ -26,6 +28,7 @@ public:
 	blockService* myBlockService;
 	inventoryService* myInventoryService;
 	UI* myUI;
+	tileService* myTileService;
 	~serviceLocator();
 
 #pragma region commonVariablePointers/Constants

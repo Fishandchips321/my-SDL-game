@@ -14,6 +14,7 @@ public:
 	~tile();
 
 	SDL_Rect boundingRect; // the part of the IMAGE that entities can't move over/through
+	bool bounding;
 	int tileID;
 
 protected:

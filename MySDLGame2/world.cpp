@@ -4,20 +4,28 @@
 world::world(serviceLocator* SL)
 {
 	mySL = SL;
-	mainWorld.setServiceLocator(mySL);
+	if (mySL == NULL)
+	{
+		std::cout << "Service Locator is NULL in World" << std::endl;
+		SDL_Delay(5000);
+	}
+	mainGrid = new worldGrid(mySL);
 }
 
 bool world::getNewGrid()
 {
-	worldGrid tempGrid(mySL);
-	otherGrids.push_back(tempGrid);
+	if (mySL == NULL)
+	{
+		std::cout << "Service Locator is NULL in World" << std::endl;
+		SDL_Delay(5000);
+	}
+	otherGrids.push_back(new worldGrid(mySL));
 	return true;
 }
 
 bool world::getNewWorldGrid()
 {
-	worldGrid tempGrid(mySL);
-	mainWorld = tempGrid;
+	mainGrid = new worldGrid(mySL);
 	return true;
 }
 
@@ -25,11 +33,11 @@ void world::drawCurrentGrid()
 {
 	if (currentGrid == -1)
 	{
-		mainWorld.draw();
+		mainGrid->draw();
 	}
 	else
 	{
-		otherGrids[currentGrid].draw();
+		otherGrids[currentGrid]->draw();
 	}
 }
 

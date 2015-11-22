@@ -73,6 +73,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="air.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="blockService.cpp" />
     <ClCompile Include="button.cpp" />
@@ -81,6 +82,7 @@
     <ClCompile Include="counter.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="entityService.cpp" />
+    <ClCompile Include="gameRegistry.cpp" />
     <ClCompile Include="grassTile.cpp" />
     <ClCompile Include="gridService.cpp" />
     <ClCompile Include="imageService.cpp" />
@@ -89,13 +91,17 @@
     <ClCompile Include="inventoryService.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="itemService.cpp" />
+    <ClCompile Include="itemStack.cpp" />
     <ClCompile Include="label.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerService.cpp" />
     <ClCompile Include="render.cpp" />
+    <ClCompile Include="scriptHandler.cpp" />
+    <ClCompile Include="scriptService.cpp" />
     <ClCompile Include="SDLFileService.cpp" />
+    <ClCompile Include="serviceInterface.cpp" />
     <ClCompile Include="serviceLocator.cpp" />
     <ClCompile Include="slider.cpp" />
     <ClCompile Include="testBlock.cpp" />
@@ -109,6 +115,7 @@
     <ClCompile Include="worldService.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="air.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="blockService.h" />
     <ClInclude Include="button.h" />
@@ -117,6 +124,7 @@
     <ClInclude Include="counter.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="entityService.h" />
+    <ClInclude Include="gameRegistry.h" />
     <ClInclude Include="grassTile.h" />
     <ClInclude Include="gridService.h" />
     <ClInclude Include="imageService.h" />
@@ -125,12 +133,16 @@
     <ClInclude Include="inventoryService.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="itemService.h" />
+    <ClInclude Include="itemStack.h" />
     <ClInclude Include="label.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playerService.h" />
     <ClInclude Include="render.h" />
+    <ClInclude Include="scriptHandler.h" />
+    <ClInclude Include="scriptService.h" />
     <ClInclude Include="SDLFileService.h" />
+    <ClInclude Include="serviceInterface.h" />
     <ClInclude Include="serviceLocator.h" />
     <ClInclude Include="slider.h" />
     <ClInclude Include="testBlock.h" />

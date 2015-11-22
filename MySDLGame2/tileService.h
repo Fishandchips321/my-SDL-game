@@ -13,6 +13,12 @@ public:
 
 	std::vector<tile* > tiles;
 
+	enum tileTypes
+	{
+		none,
+		grass
+	};
+
 private:
 	std::vector<tile* > updates;
 	serviceLocator* mySL;

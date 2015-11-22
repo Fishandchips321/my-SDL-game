@@ -18,21 +18,13 @@ public:
 	bool breakBlock(int x, int y);
 	bool rightClickBlock(int x, int y);
 	bool leftClickBlock(int x, int y);
-	std::vector<std::vector<tile *> > baseGrid;
-	std::vector<std::vector<block* > > blockGrid;
+	std::vector<std::vector<chunk* >> chunkGrid;
 	~worldGrid();
-
-	enum states
-	{
-		randomGen,
-		fromFile,
-		preset
-	};
-	states state;
 
 	int gridWidth, gridHeight;
 
 private:
 	serviceLocator* mySL;
+	int chunkSize;
 };
 

@@ -165,13 +165,31 @@
     <ClCompile Include="block.cpp">
       <Filter>Source Files\blocks</Filter>
     </ClCompile>
-    <ClCompile Include="tileService.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="worldGen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="entityService.cpp">
+      <Filter>Source Files\services</Filter>
+    </ClCompile>
+    <ClCompile Include="tileService.cpp">
+      <Filter>Source Files\services</Filter>
+    </ClCompile>
+    <ClCompile Include="serviceInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scriptService.cpp">
+      <Filter>Source Files\services</Filter>
+    </ClCompile>
+    <ClCompile Include="scriptHandler.cpp">
+      <Filter>Source Files\services</Filter>
+    </ClCompile>
+    <ClCompile Include="air.cpp">
+      <Filter>Source Files\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="itemStack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gameRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -266,13 +284,31 @@
     <ClInclude Include="block.h">
       <Filter>Header Files\blocks</Filter>
     </ClInclude>
-    <ClInclude Include="tileService.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="worldGen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="entityService.h">
+      <Filter>Header Files\services</Filter>
+    </ClInclude>
+    <ClInclude Include="tileService.h">
+      <Filter>Header Files\services</Filter>
+    </ClInclude>
+    <ClInclude Include="serviceInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scriptService.h">
+      <Filter>Header Files\services</Filter>
+    </ClInclude>
+    <ClInclude Include="scriptHandler.h">
+      <Filter>Header Files\services</Filter>
+    </ClInclude>
+    <ClInclude Include="air.h">
+      <Filter>Header Files\blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="itemStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

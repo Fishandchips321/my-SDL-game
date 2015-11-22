@@ -2,7 +2,7 @@
 //TODO
 //* = don't have to complete
 
-
+//encorperate a light layer on blocks/tiles that decrease alpha depending on light level
 //for lighting, incorperate openGL*
 //setup renderer functions for the Texture type*
 
@@ -23,19 +23,23 @@
 //complete the terrain generation class
 //research how to randomly generate terrain :P
 
-//incorperate chunks into worldGrid
-
 //the entity controller will register each entity to one or more chunks (if it is across a chunk boundary)
 //the controller will deal with collisions with other entities and blocks using a vector of structs
 	//the structs will have an entity pointer and 4 chunk pointers
 //the controller will handle pushing of other entities and damaging
 	//when a mob comes into collision with another mob, it calls a function of the colliding entity with a pointer to the other entity (for damaging etc.)
 
-//make new functions for the entity class
-//void onCollide(entity* collider)
-//void onCollide(block* collider)
-//bool damage(int amount)
-//bool push(int xVel, int yVel)
+//worldGrid file loading/creating
+//when the player creates a new world create an empty file
+//the world grid will find NULL references to tiles and blocks so it will randomly generate them
+//when a chunk unloads the world grid will check if it has been changed (the flag has been implemented already)
+//if it has been changed, the changes are saved and the chunk object is deleted
+//if it hasn't been changed, the chunk object is just deleted
+
+//every time a chunk is loaded or generated check to see if mobs should spawn
+//spawnable entities will be registered with a mob spawning class
+
+//figure out how the game will access the blocks, items etc objects
 #pragma endregion
 
 #include <iostream>
@@ -49,12 +53,15 @@
 #include "worldService.h"
 #include "playerService.h"
 #include "UI.h"
+#include "tileService.h"
 #include "serviceLocator.h"
 #include "world.h"
 #include "counter.h"
+#include "air.h"
 #include "testBlock.h"
 #include "block.h"
 #include "toolTip.h"
+#include "grassTile.h"
 
 #pragma region defenitions
 bool initAll();
@@ -67,6 +74,7 @@ bool loadUI();
 bool initSL();
 bool initPlayer();
 bool initBlocks();
+bool initTiles();
 
 void eventUpdate();
 void update();
@@ -74,6 +82,7 @@ void draw();
 #pragma endregion
 
 button* startGame;
+imageService* SimageService;
 
 const int FPS = 60;
 const int screenTicksPerFrame = 1000 / FPS;
@@ -98,10 +107,17 @@ int main(int argc, char* argv[])
 	mySL = new serviceLocator; //instantiate the service locator
 	if (initAll())
 	{
-		myGameState = gameStates::splash;
+		myGameState = gameStates::play;
 		mySL->myWorldService->getNewWorld(mySL);
 		mySL->myWorldService->worlds[0].getNewWorldGrid();
-		mySL->myWorldService->worlds[0].mainWorld.useDefaultGrid();
+		bool success = mySL->myWorldService->worlds[0].mainGrid->useDefaultGrid();
+
+		if (success == false)
+		{
+			std::cout << "[ERROR]: test world couldn't be created. stopping..." << std::endl;
+			SDL_Delay(2000);
+			return 1;
+		}
 
 		initPlayer();
 
@@ -124,9 +140,9 @@ int main(int argc, char* argv[])
 
 void mainGame()
 {
-	SDL_Rect rectangle;
-	SDL_Surface* surface = mySL->myImageService.surfaces[0];
-	rectangle.x = 0; rectangle.y = 0; rectangle.w = 100; rectangle.h = 100;
+	//SDL_Rect rectangle;
+	//SDL_Surface* surface = mySL->myImageService.surfaces[0];
+	//rectangle.x = 0; rectangle.y = 0; rectangle.w = 100; rectangle.h = 100;
 	bool quit = false;
 	cout << "[INFO]: Entering the game loop" << endl;
 
@@ -199,7 +215,7 @@ void eventUpdate()
 	}
 
 	mySL->myPlayerService->myPlayer->eventUpdate(mySL->currentEvent);
-	mySL->myUI->eventUpdate();
+	//mySL->myUI->eventUpdate();
 }
 
 void update()
@@ -224,7 +240,7 @@ void update()
 		break;
 	}
 
-	mySL->myUI->update();
+	//mySL->myUI->update();
 }
 
 void draw()
@@ -247,7 +263,7 @@ void draw()
 		mySL->myPlayerService->myPlayer->draw();
 		break;
 	}
-	mySL->myUI->draw();
+	//mySL->myUI->draw();
 
 	mySL->globalRenderer.drawScreen(); //no touchey
 }
@@ -335,7 +351,15 @@ bool initAll()
 								}
 								else
 								{
-									return true;
+									if (!initTiles())
+									{
+										cout << "[ERROR]: The tiles weren't initialised correctly" << endl;
+										return false;
+									}
+									else
+									{
+										return true;
+									}
 								}
 							}
 						}
@@ -370,12 +394,6 @@ bool loadAllTextures()
 		loaded = false;
 		cout << "[ERROR]: failed to load 'assets/Textures/missing texture.png'" << endl;
 	}
-	//the sara sprite sheet
-	if (!mySL->myImageService.loadImage("assets/Textures/SaraFullSheet.png"))
-	{
-		loaded = false;
-		cout << "[ERROR]: Failed to load 'assets/Textures/SaraFullSheet.png'" << endl;
-	}
 	//the seperate UI sections
 	if (!loadUI())
 	{
@@ -390,7 +408,7 @@ bool loadBlueUI()
 	bool loaded = true;
 
 	const string path = "assets/Textures/UI/Seperate/blue_";
-
+	
 	//check mark box
 	if (!mySL->myImageService.loadImage(path + "boxCheckMark.png"))
 	{
@@ -681,6 +699,14 @@ bool initSL()
 		return false;
 	}
 
+	tileService* TSt = new tileService(mySL);
+	mySL->myTileService = TSt;
+	if (mySL->myTileService == NULL)
+	{
+		cout << "[ERROR]: Tile Service couldn't be initialised correctly" << endl;
+		return false;
+	}
+
 	return true;
 }
 
@@ -703,7 +729,14 @@ bool initPlayer()
 
 bool initBlocks()
 {
-	mySL->myBlockService->registerBlock(new block(mySL));
+	mySL->myBlockService->registerBlock(new air(mySL));
 	mySL->myBlockService->registerBlock(new testBlock(mySL));
+	return true;
+}
+
+bool initTiles()
+{
+	mySL->myTileService->registerTile(new tile(mySL));
+	mySL->myTileService->registerTile(new grassTile(mySL));
 	return true;
 }

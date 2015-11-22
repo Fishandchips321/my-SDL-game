@@ -17,7 +17,7 @@ public:
 	virtual bool onBreak();
 	virtual bool onPlace();
 
-	SDL_Rect tileRect;
+	const int blockWidth = 20, blockHeight = 20;
 	SDL_Rect drawRect;
 	bool solid;
 	int blockID;
@@ -34,6 +34,7 @@ protected:
 	serviceLocator* mySL;
 	bool loadSurface(std::string path);
 	material blockMaterial;
+	
 private:
 	SDL_Surface* surface;
 	bool randomUpdates;

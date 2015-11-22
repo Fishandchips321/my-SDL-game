@@ -1,14 +1,23 @@
 #pragma once
 #include "item.h"
-#include <vector>
+
 class itemStack
 {
 public:
 	itemStack();
-	bool setItemType(int type);
+	void setItem(item* NItem);
+	item* getItem();
+	void setAmount(int amount);
+	void addAmount(int amount);
+	void removeAmount(int amount);
+	int getAmount();
+	void setMetadata(int meta);
+	int getMetadata();
 	~itemStack();
 
-	std::vector<item> items;
-	int maxStack;
+private:
+	item* SItem;
+	int amount;
+	int metadata;
 };
 

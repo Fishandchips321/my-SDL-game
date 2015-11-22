@@ -24,8 +24,6 @@ public:
 	{
 		//tiles
 		missing,
-		//entity sprite sheets
-		saraSheet,
 		//UI
 		//	blue
 		blue_boxCheckMark,
