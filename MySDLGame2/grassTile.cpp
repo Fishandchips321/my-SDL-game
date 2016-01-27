@@ -1,8 +1,7 @@
 #include "grassTile.h"
 
 
-grassTile::grassTile(serviceLocator* SL)
-	:tile(SL)
+grassTile::grassTile()
 {
 	loadSurface("assets/Textures/grass.png");
 }

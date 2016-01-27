@@ -1,8 +1,7 @@
 #include "blockService.h"
 
 
-blockService::blockService(serviceLocator* SL)
-	:mySL(SL)
+blockService::blockService()
 {
 }
 

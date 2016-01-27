@@ -1,46 +1,78 @@
 #include "world.h"
 
 
-world::world(serviceLocator* SL)
+world::world()
 {
-	mySL = SL;
-	if (mySL == NULL)
-	{
-		std::cout << "Service Locator is NULL in World" << std::endl;
-		SDL_Delay(5000);
-	}
-	mainGrid = new worldGrid(mySL);
 }
 
-bool world::getNewGrid()
+void world::eventUpdate()
 {
-	if (mySL == NULL)
-	{
-		std::cout << "Service Locator is NULL in World" << std::endl;
-		SDL_Delay(5000);
-	}
-	otherGrids.push_back(new worldGrid(mySL));
-	return true;
+
 }
 
-bool world::getNewWorldGrid()
+void world::update()
 {
-	mainGrid = new worldGrid(mySL);
-	return true;
+	
 }
 
-void world::drawCurrentGrid()
+void world::draw()
 {
-	if (currentGrid == -1)
-	{
-		mainGrid->draw();
-	}
-	else
-	{
-		otherGrids[currentGrid]->draw();
-	}
+	grids[currentGrid]->draw();
+}
+
+bool world::useTestingWorld()
+{
+	worldGrid* testGrid = new worldGrid();
+	grids.push_back(testGrid);
+	currentGrid = (int)grids.size() - 1;
+	return grids[currentGrid]->useDefaultGrid();
+}
+
+bool world::newWorld(std::string name)
+{
+	return false;
+}
+
+bool world::loadWorld(std::string name)
+{
+	return false;
+}
+
+bool world::saveWorld()
+{
+	return false;
+}
+
+bool world::placeBlock(int x, int y, int type)
+{
+	return grids[currentGrid]->placeBlock(x, y, type);
+}
+
+bool world::placeBlockEntity(int x, int y, block* blockEntity)
+{
+	return grids[currentGrid]->placeBlockEntity(x, y, blockEntity);
+}
+
+bool world::breakBlock(int x, int y)
+{
+	return grids[currentGrid]->breakBlock(x, y);
+}
+
+bool world::rightClickBlock(int x, int y)
+{
+	return grids[currentGrid]->rightClickBlock(x, y);
+}
+
+bool world::leftClickBlock(int x, int y)
+{
+	return grids[currentGrid]->leftClickBlock(x, y);
 }
 
 world::~world()
 {
+	for (int i = 0; i < (int)grids.size; i++)
+	{
+		delete grids[i];
+		grids[i] = NULL;
+	}
 }

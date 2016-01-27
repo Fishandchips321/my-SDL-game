@@ -1,11 +1,10 @@
 #pragma once
-#include "serviceLocator.h"
 #include "tile.h"
 #include <vector>
 class tileService
 {
 public:
-	tileService(serviceLocator* SL);
+	tileService();
 	void update();
 	int registerTile(tile* newTile);
 	bool registerForUpdtaes(tile* newTile);// for animation updates
@@ -21,6 +20,5 @@ public:
 
 private:
 	std::vector<tile* > updates;
-	serviceLocator* mySL;
 };
 

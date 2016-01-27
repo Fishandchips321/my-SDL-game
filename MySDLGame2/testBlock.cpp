@@ -1,8 +1,7 @@
 #include "testBlock.h"
 
 
-testBlock::testBlock(serviceLocator* SL)
-	:block(SL)
+testBlock::testBlock()
 {
 	loadSurface("assets/Textures/test block.png");
 }

@@ -1,8 +1,7 @@
 #include "tileService.h"
 
 
-tileService::tileService(serviceLocator* SL)
-	:mySL(SL)
+tileService::tileService()
 {
 }
 

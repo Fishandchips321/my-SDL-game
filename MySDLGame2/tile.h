@@ -2,12 +2,12 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
-#include "serviceLocator.h"
+#include "resourceLocator.h"
 
 class tile
 {
 public:
-	tile(serviceLocator* SL);
+	tile();
 	virtual void update();
 	virtual void draw(int x, int y);
 	void setID(int ID);
@@ -18,7 +18,7 @@ public:
 	int tileID;
 
 protected:
-	serviceLocator* mySL;
+	resourceLocator myRL;
 	bool loadSurface(std::string path);
 private:
 	SDL_Surface* surface;

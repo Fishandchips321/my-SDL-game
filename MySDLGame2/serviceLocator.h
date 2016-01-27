@@ -8,7 +8,7 @@
 #include <SDL_mixer.h>
 
 class blockService;
-class worldService;
+class world;
 class playerService;
 class inventoryService;
 class tileService;
@@ -23,7 +23,7 @@ public:
 	playerService* myPlayerService;
 	imageService myImageService;
 	gridService myGridService;
-	worldService* myWorldService;
+	world* myWorld;
 	SDL_Event currentEvent;
 	blockService* myBlockService;
 	inventoryService* myInventoryService;

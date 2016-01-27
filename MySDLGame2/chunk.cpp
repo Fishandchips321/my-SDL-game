@@ -1,24 +1,15 @@
 #include "chunk.h"
-#include "blockService.h"
-#include "tileService.h"
-#include <exception>
 
 
-chunk::chunk(serviceLocator* SL, int x, int y)
-	:mySL(SL)
+chunk::chunk(int x, int y)
 {
 	//set the absolute position of the chunk
-	if (mySL == NULL)
-	{
-		std::cout << "[ERROR]: Service Locator is NULL in chunk" << std::endl;
-		SDL_Delay(5000);
-	}
 
 	if (x < 0 || x > 1000 || y < 0 || y > 1000)
 	{
 		std::cout << "[ERROR]: Incorrect positioning data" << std::endl;
 	}
-	int posX = chunkSize * mySL->tileWidth, posY = chunkSize * mySL->tileHeight;
+	int posX = chunkSize * myRL.tileWidth, posY = chunkSize * myRL.tileHeight;
 
 	if (posX < 0 || posY < 0)
 	{
@@ -32,78 +23,34 @@ chunk::chunk(serviceLocator* SL, int x, int y)
 		chunkRect.h = chunkSize;
 		changed = false;
 	}
-	//initChunks();
 }
-
-//void chunk::initChunks()
-//{
-//	for (int x = 0; x < chunkSize; x++)
-//	{
-//		std::vector<int> tileX;
-//		std::vector<int> blockX;
-//		for (int y = 0; y < chunkSize; y++)
-//		{
-//			tileX.push_back(0);
-//			blockX.push_back(0);
-//		}
-//		tiles.push_back(tileX);
-//		blocks.push_back(blockX);
-//	}
-//}
 
 void chunk::draw()
 {
-
-	if (mySL == NULL)
-	{
-		std::cout << "[ERROR]: chunk " << chunkRect.x / 200 << " " << chunkRect.y / 200 << " has a NULL service locator. Stopping..." << std::endl;
-		SDL_Delay(5000);
-		exit(1);
-	}
-
 	//i = x, j = y
 	for (int i = 0; i < chunkSize; i++)
 	{
 		for (int j = 0; j < chunkSize; j++)
 		{
-			if (tiles[i][j] != NULL)
+			if (tiles[i][j].tTile != NULL)
 			{
-				//tiles[i][j]->draw(chunkRect.x + (i * mySL->tileWidth), chunkRect.y + (j * mySL->tileHeight)); //draws the tile
-				mySL->myTileService->tiles[tiles[i][j]]->draw(chunkRect.x + (i * mySL->tileWidth), chunkRect.y + (j * mySL->tileHeight));
-			}
-			else
-			{
-				std::cout << "[ERROR]: Chunk " << chunkRect.x / 200 << " " << chunkRect.y / 200 << " has a null tile at " << i << " " << j << std::endl;
-				if (mySL != NULL)
-				{
-					tiles[i][j] = mySL->myTileService->grass;
-				}
-				else
-				{
-					std::cout << "[ERROR]: chunk " << chunkRect.x / 200 << " " << chunkRect.y / 200 << " has a NULL service locator. Stopping..." << std::endl;
-					SDL_Delay(2000);
-					exit(1);
-				}
-
+				tiles[i][j].tTile->draw(chunkRect.x + (i * myRL.tileWidth), chunkRect.y + (j * myRL.tileHeight));
 			}
 
-
-			if (blocks[i][j] != NULL)
+			if (blocks[i][j].tBlock != NULL)
 			{
-				//blocks[i][j]->draw(chunkRect.x + (i * mySL->tileWidth), chunkRect.y + (j * mySL->tileHeight));//draws the block
-				mySL->myBlockService->blocks[blocks[i][j]]->draw(chunkRect.x + (i * mySL->tileWidth), chunkRect.y + (j * mySL->tileHeight));
+				blocks[i][j].tBlock->draw(chunkRect.x + (i * myRL.tileWidth), chunkRect.y + (j * myRL.tileHeight));
 			}
 
-			//std::cout << "drawn " << i << " " << j << std::endl;
 		}
 	}
 }
 
 bool chunk::placeBlock(int x, int y, int type)
 {
-	if (blocks[x][y] == 0)//if there isn't a block where the player wants to place one
+	if (blocks[x][y].tBlock == myRL.myBlockService->blocks[myRL.myBlockService->air])//if there isn't a block where the player wants to place one
 	{
-		blocks[x][y] = type; //get a refrence to the specified block type
+		blocks[x][y].tBlock = myRL.myBlockService->blocks[type]; //get a pointer to the specified block type
 		changed = true;
 		return true;
 	}
@@ -115,9 +62,9 @@ bool chunk::placeBlock(int x, int y, int type)
 
 bool chunk::breakBlock(int x, int y)
 {
-	if (blocks[x][y] != 0)//if there isn't a block where the break request points to (which shouldn't happen mind)
+	if (blocks[x][y].tBlock != myRL.myBlockService->blocks[myRL.myBlockService->air])//if there isn't a block where the break request points to (which shouldn't happen mind)
 	{
-		blocks[x][y] = mySL->myBlockService->air;
+		blocks[x][y].tBlock = myRL.myBlockService->blocks[myRL.myBlockService->air];
 		changed = true;
 		return true;
 	}
@@ -131,20 +78,20 @@ bool chunk::breakBlock(int x, int y)
 
 bool chunk::leftClickBlock(int x, int y)
 {
-	if (blocks[x][y] != NULL)
+	if (blocks[x][y].tBlock != NULL)
 	{
 		//return blocks[x][y]->onLeftClick();
-		return mySL->myBlockService->blocks[blocks[x][y]]->onLeftClick();
+		return blocks[x][y].tBlock->onLeftClick();
 	}
 	return false;
 }
 
 bool chunk::rightClickBlock(int x, int y)
 {
-	if (blocks[x][y] != NULL)
+	if (blocks[x][y].tBlock != NULL)
 	{
 		//return blocks[x][y]->onRightClick();
-		return mySL->myBlockService->blocks[blocks[x][y]]->onRightClick();
+		return blocks[x][y].tBlock->onRightClick();
 	}
 	return false;
 }
@@ -175,11 +122,12 @@ bool chunk::registerEntiy(entity* ent)
 	}
 }
 
-bool chunk::loadBlock(int newBlock, int x, int y)
+bool chunk::loadBlock(int newBlock, int x, int y, int metadata)
 {
-	blocks[x][y] = newBlock;
-	if (blocks[x][y] == newBlock)
+	blocks[x][y].tBlock = myRL.myBlockService->blocks[newBlock];
+	if (blocks[x][y].tBlock == myRL.myBlockService->blocks[newBlock])
 	{
+		blocks[x][y].metadata = metadata;
 		return true;
 	}
 	else
@@ -188,17 +136,12 @@ bool chunk::loadBlock(int newBlock, int x, int y)
 	}
 }
 
-bool chunk::loadTile(int newTile, int x, int y)
+bool chunk::loadTile(int newTile, int x, int y, int metadata)
 {
-
-	if (newTile == NULL)
+	tiles[x][y].tTile = myRL.myTileService->tiles[newTile];
+	if (tiles[x][y].tTile == myRL.myTileService->tiles[newTile])
 	{
-		return false;
-	}
-
-	tiles[x][y] = newTile;
-	if (tiles[x][y] == newTile)
-	{
+		tiles[x][y].metadata = metadata;
 		return true;
 	}
 	else

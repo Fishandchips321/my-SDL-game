@@ -3,7 +3,7 @@
 class testBlock : public block
 {
 public:
-	testBlock(serviceLocator* SL);
+	testBlock();
 	~testBlock();
 
 private:

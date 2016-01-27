@@ -1,10 +1,10 @@
 #pragma once
-#include "serviceLocator.h"
+#include "resourceLocator.h"
 #include "block.h"
 class entity
 {
 public:
-	entity(serviceLocator *SL);
+	entity();
 	virtual void update();
 	virtual void eventUpdate(SDL_Event nextEvent);
 	virtual void draw();
@@ -18,6 +18,6 @@ public:
 	~entity();
 
 protected:
-	serviceLocator *mySL;
+	resourceLocator myRL;
 };
 

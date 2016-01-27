@@ -2,14 +2,14 @@
 #include <vector>
 #include "tile.h"
 #include "block.h"
-#include "blockService.h"
+#include "resourceLocator.h"
 #include "chunk.h"
 #include "worldGen.h"
 class worldGrid
 {
 public:
-	worldGrid(serviceLocator* SL = NULL);
-	bool setServiceLocator(serviceLocator* SL);
+	worldGrid();
+	void update();
 	void draw();
 	bool loadGridFromText(std::string path);
 	bool useDefaultGrid();
@@ -18,13 +18,14 @@ public:
 	bool breakBlock(int x, int y);
 	bool rightClickBlock(int x, int y);
 	bool leftClickBlock(int x, int y);
+	void getChunkBlock(int *x, int *y, int *chunkX, int *chunkY);
 	std::vector<std::vector<chunk* >> chunkGrid;
 	~worldGrid();
 
 	int gridWidth, gridHeight;
 
 private:
-	serviceLocator* mySL;
+	resourceLocator myRL;
 	int chunkSize;
 };
 

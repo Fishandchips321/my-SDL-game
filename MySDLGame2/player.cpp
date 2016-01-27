@@ -1,27 +1,26 @@
 #include "player.h"
 
 
-player::player(serviceLocator* SL)
-	:entity(SL)
+player::player()
 {
 	//setup player dimensions for collision detection
 	entityRect.w = 20;
 	entityRect.h = 40;
 	//center the player rect
-	entityRect.x = (mySL->globalRenderer.screenWidth / 2) - (entityRect.w / 2);
-	entityRect.y = (mySL->globalRenderer.screenHeight / 2) - (entityRect.h / 2);
+	entityRect.x = (myRL.globalRenderer->screenWidth / 2) - (entityRect.w / 2);
+	entityRect.y = (myRL.globalRenderer->screenHeight / 2) - (entityRect.h / 2);
 	//register the player inventory and get the pointer for it
-	playerInvIndex = mySL->myInventoryService->registerInventory();
-	playerInv = mySL->myInventoryService->getPointer(playerInvIndex);
+	playerInvIndex = myRL.myInventoryService->registerInventory();
+	playerInv = myRL.myInventoryService->getPointer(playerInvIndex);
 
 	viewport = { 18, 652, 29, 51 }; //x, y, w, h
 
-	entitySurface = mySL->myImageService.loadImageReturn("assets/Textures/SaraFullSheet.png");
+	entitySurface = myRL.myImageService->loadImageReturn("assets/Textures/SaraFullSheet.png");
 }
 
 void player::draw()
 {
-	mySL->globalRenderer.drawViewportSurface(entitySurface, viewport, entityRect);
+	myRL.globalRenderer->drawViewportSurface(entitySurface, viewport, entityRect);
 
 	animate();
 }
@@ -45,17 +44,17 @@ void player::update()
 {
 	move(); //get x and y vel
 	//change the global render offsets
-	mySL->globalRenderer.xOffset -= xVel;
-	mySL->globalRenderer.yOffset -= yVel;
+	myRL.globalRenderer->xOffset -= xVel;
+	myRL.globalRenderer->yOffset -= yVel;
 	//stop the player from going off the screen
-	if (mySL->globalRenderer.xOffset > 0)
+	if (myRL.globalRenderer->xOffset > 0)
 	{
-		mySL->globalRenderer.xOffset = 0;
+		myRL.globalRenderer->xOffset = 0;
 	}
 
-	if (mySL->globalRenderer.yOffset > 0)
+	if (myRL.globalRenderer->yOffset > 0)
 	{
-		mySL->globalRenderer.yOffset = 0;
+		myRL.globalRenderer->yOffset = 0;
 	}
 	//update the place timer
 	if (placeTimer > 0)
@@ -63,13 +62,19 @@ void player::update()
 	//if the right mouse button is down, place a block
 	if (SDL_GetMouseState(&mPos.x, &mPos.y) & SDL_BUTTON_RMASK && placeTimer == 0)
 	{
-		mySL->myWorldService->worlds[mySL->myWorldService->currentWorld].mainGrid->placeBlock(mPos.x, mPos.y, 1);
+		if (!myRL.myWorld->placeBlock(mPos.x, mPos.y, 1))
+		{
+			myRL.myWorld->rightClickBlock(mPos.x, mPos.y);
+		}
 		placeTimer = placeTimerStart;
 	}
 	//if the left mouse button is down, break the block
 	if (SDL_GetMouseState(&mPos.x, &mPos.y) & SDL_BUTTON_LMASK)
 	{
-		mySL->myWorldService->worlds[mySL->myWorldService->currentWorld].mainGrid->breakBlock(mPos.x, mPos.y);
+		if (!myRL.myWorld->breakBlock(mPos.x, mPos.y))
+		{
+			myRL.myWorld->leftClickBlock(mPos.x, mPos.y);
+		}
 	}
 }
 

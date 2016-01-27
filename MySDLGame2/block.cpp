@@ -1,24 +1,23 @@
 #include "block.h"
 #include "blockService.h"
 
-block::block(serviceLocator* SL)
-	:mySL(SL)
+block::block()
 {
-	surface = mySL->myImageService.loadImageReturn("assets/Textures/missing texture.png");
+	surface = myRL.myImageService->loadImageReturn("assets/Textures/missing texture.png");
 }
 
 void block::draw(int x, int y)
 {
-	drawRect.x = x + mySL->globalRenderer.xOffset;
-	drawRect.y = y + mySL->globalRenderer.yOffset;
+	drawRect.x = x + myRL.globalRenderer->xOffset;
+	drawRect.y = y + myRL.globalRenderer->yOffset;
 	drawRect.w = blockWidth;
 	drawRect.h = blockHeight;
 
-	if (drawRect.x + drawRect.w > 0 && drawRect.x < mySL->globalRenderer.screenWidth)
+	if (drawRect.x + drawRect.w > 0 && drawRect.x < myRL.globalRenderer->screenWidth)
 	{
-		if (drawRect.y + drawRect.h > 0 && drawRect.y < mySL->globalRenderer.screenHeight)
+		if (drawRect.y + drawRect.h > 0 && drawRect.y < myRL.globalRenderer->screenHeight)
 		{
-			mySL->globalRenderer.drawSurface(surface, drawRect);
+			myRL.globalRenderer->drawSurface(surface, drawRect);
 		}
 	}
 }
@@ -60,7 +59,7 @@ bool block::onBreak() //returns true to break the block
 
 bool block::loadSurface(std::string path)
 {
-	surface = mySL->myImageService.loadImageReturn(path);
+	surface = myRL.myImageService->loadImageReturn(path);
 	return true;
 }
 

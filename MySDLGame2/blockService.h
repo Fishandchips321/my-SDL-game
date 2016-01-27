@@ -1,11 +1,11 @@
 #pragma once
-#include "serviceLocator.h"
+#include "resourceLocator.h"
 #include <vector>
 #include "block.h"
 class blockService
 {
 public:
-	blockService(serviceLocator* SL);
+	blockService();
 	void update();
 	int registerBlock(block* newBlock);
 	bool registerForUpdates(block* newBlock); //for animated textures
@@ -26,6 +26,6 @@ private:
 	std::vector<block* > updates;
 	//int updatesSize
 	//int blocksSize;
-	serviceLocator* mySL;
+	resourceLocator* myRL;
 };
 

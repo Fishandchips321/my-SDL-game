@@ -1,5 +1,5 @@
 #pragma once
-#include "serviceLocator.h"
+#include "resourceLocator.h"
 #include "tile.h"
 #include "block.h"
 #include "entity.h"
@@ -7,14 +7,14 @@
 class chunk
 {
 public:
-	chunk(serviceLocator* SL, int x, int y);
+	chunk( int x, int y);
 	void draw();
 	bool placeBlock(int x, int y, int type);
 	bool breakBlock(int x, int y);
 	bool leftClickBlock(int x, int y);
 	bool rightClickBlock(int x, int y);
-	bool loadTile(int tile, int x, int y);
-	bool loadBlock(int block, int x, int y);
+	bool loadTile(int tile, int x, int y, int metadata = 0);
+	bool loadBlock(int block, int x, int y, int metadata = 0);
 	bool clearEntities();
 	bool registerEntiy(entity* ent);
 	~chunk();
@@ -26,15 +26,22 @@ public:
 
 	std::vector<entity* > entities;
 	bool changed; //to determine whether the chunk should be saved
+
+	struct blockStack
+	{
+		block* tBlock;
+		int metadata;
+	};
+
+	struct tileStack
+	{
+		tile* tTile;
+		int metadata;
+	};
 private:
-	serviceLocator* mySL;
+	resourceLocator myRL;
 
-	int tiles[10][10];
-	int blocks[10][10];
-
-	//void initChunks();
-
-	//std::vector< std::vector<int>> tiles;
-	//std::vector< std::vector<int>> blocks;
+	tileStack tiles[10][10];
+	blockStack blocks[10][10];
 };
 

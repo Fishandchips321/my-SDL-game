@@ -1,10 +1,9 @@
 #include "entity.h"
 
 
-entity::entity(serviceLocator *SL)
-	:mySL(SL)
+entity::entity()
 {
-	entitySurface = mySL->myImageService.loadImageReturn("assets/Textures/missing texture.png");
+	entitySurface = myRL.myImageService->loadImageReturn("assets/Textures/missing texture.png");
 	entityRect = { 0, 0, entitySurface->w, entitySurface->h };
 }
 
@@ -17,12 +16,12 @@ void entity::eventUpdate(SDL_Event nextEvent)
 void entity::draw()
 {
 	SDL_Rect drawRect;
-	drawRect.x = entityRect.x + mySL->globalRenderer.xOffset;
-	drawRect.x = entityRect.x + mySL->globalRenderer.yOffset;
+	drawRect.x = entityRect.x + myRL.globalRenderer->xOffset;
+	drawRect.x = entityRect.x + myRL.globalRenderer->yOffset;
 	drawRect.w = entityRect.w;
 	drawRect.h = entityRect.h;
 
-	mySL->globalRenderer.drawScaledSurface(entitySurface, drawRect);
+	myRL.globalRenderer->drawScaledSurface(entitySurface, drawRect);
 }
 
 void entity::onCollide(entity* collider)

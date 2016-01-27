@@ -1,11 +1,10 @@
 #include "tile.h"
 #include <iostream>
 
-tile::tile(serviceLocator* SL)
-	:mySL(SL)
+tile::tile()
 {
 	boundingRect = { 0, 0, 0, 0 };
-	surface = mySL->myImageService.loadImageReturn("assets/Textures/missing texture.png");
+	surface = myRL.myImageService->loadImageReturn("assets/Textures/missing texture.png");
 }
 
 void tile::update()
@@ -16,23 +15,23 @@ void tile::draw(int x, int y)
 {
 	SDL_Rect drawRect;
 
-	drawRect.x = x + mySL->globalRenderer.xOffset;
-	drawRect.y = y + mySL->globalRenderer.yOffset;
-	drawRect.w = mySL->tileWidth;
-	drawRect.h = mySL->tileHeight;
+	drawRect.x = x + myRL.globalRenderer->xOffset;
+	drawRect.y = y + myRL.globalRenderer->yOffset;
+	drawRect.w = myRL.tileWidth;
+	drawRect.h = myRL.tileHeight;
 
-	if (drawRect.x + drawRect.w >= 0 && drawRect.x < mySL->globalRenderer.screenWidth)
+	if (drawRect.x + drawRect.w >= 0 && drawRect.x < myRL.globalRenderer->screenWidth)
 	{
-		if (drawRect.y + drawRect.h >= 0 && drawRect.y < mySL->globalRenderer.screenHeight)
+		if (drawRect.y + drawRect.h >= 0 && drawRect.y < myRL.globalRenderer->screenHeight)
 		{
-			mySL->globalRenderer.drawSurface(surface, drawRect);
+			myRL.globalRenderer->drawSurface(surface, drawRect);
 		}
 	}
 }
 
 bool tile::loadSurface(std::string path)
 {
-	surface = mySL->myImageService.loadImageReturn(path);
+	surface = myRL.myImageService->loadImageReturn(path);
 	if (surface != NULL)
 	{
 		return true;

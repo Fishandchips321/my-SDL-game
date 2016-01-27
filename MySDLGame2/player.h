@@ -1,14 +1,12 @@
 #pragma once
 #include <SDL.h>
-#include "worldService.h"
 #include "inventory.h"
-#include "inventoryDisplay.h"
 #include "entity.h"
 class player : public entity
 {
 	friend playerService;
 public:
-	player(serviceLocator* SL);
+	player();
 	void update(); //called once a frame
 	void eventUpdate(SDL_Event nextEvent); //can be called multiple times a frame
 	void draw();

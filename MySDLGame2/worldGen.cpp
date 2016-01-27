@@ -1,15 +1,15 @@
 #include "worldGen.h"
 
 
-worldGen::worldGen(serviceLocator* SL, int seed)
-	:mySL(SL),
-	genSeed(seed)
+worldGen::worldGen(int seed)
+	:genSeed(seed)
 {
 }
 
 chunk worldGen::generateChunk(int x, int y)
 {
-	chunk newChunk(mySL, x, y);
+	chunk newChunk(x, y);
+	//gen chunk here
 	return newChunk;
 }
 

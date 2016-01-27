@@ -141,41 +141,14 @@
     <ClCompile Include="inventory.cpp">
       <Filter>Source Files\inventories</Filter>
     </ClCompile>
-    <ClCompile Include="UI.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="inventoryDisplay.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="button.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="label.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="menu.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="slider.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="toolTip.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
     <ClCompile Include="block.cpp">
       <Filter>Source Files\blocks</Filter>
-    </ClCompile>
-    <ClCompile Include="worldGen.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="entityService.cpp">
       <Filter>Source Files\services</Filter>
     </ClCompile>
     <ClCompile Include="tileService.cpp">
       <Filter>Source Files\services</Filter>
-    </ClCompile>
-    <ClCompile Include="serviceInterface.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scriptService.cpp">
       <Filter>Source Files\services</Filter>
@@ -187,10 +160,22 @@
       <Filter>Source Files\blocks</Filter>
     </ClCompile>
     <ClCompile Include="itemStack.cpp">
+      <Filter>Source Files\items</Filter>
+    </ClCompile>
+    <ClCompile Include="worldGen.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gameRegistry.cpp">
+    <ClCompile Include="initializer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="resourceLocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -260,41 +245,14 @@
     <ClInclude Include="inventory.h">
       <Filter>Header Files\inventories</Filter>
     </ClInclude>
-    <ClInclude Include="inventoryDisplay.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="toolTip.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="slider.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="label.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="button.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="menu.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="block.h">
       <Filter>Header Files\blocks</Filter>
-    </ClInclude>
-    <ClInclude Include="worldGen.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="entityService.h">
       <Filter>Header Files\services</Filter>
     </ClInclude>
     <ClInclude Include="tileService.h">
       <Filter>Header Files\services</Filter>
-    </ClInclude>
-    <ClInclude Include="serviceInterface.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scriptService.h">
       <Filter>Header Files\services</Filter>
@@ -306,10 +264,22 @@
       <Filter>Header Files\blocks</Filter>
     </ClInclude>
     <ClInclude Include="itemStack.h">
+      <Filter>Header Files\items</Filter>
+    </ClInclude>
+    <ClInclude Include="worldGen.h">
+      <Filter>Header Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gameRegistry.h">
+    <ClInclude Include="initializer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resourceLocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="widget.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

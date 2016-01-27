@@ -1,10 +1,10 @@
 #pragma once
 #include <SDL.h>
-#include "serviceLocator.h"
+#include "resourceLocator.h"
 class block
 {
 public:
-	block(serviceLocator* SL);
+	block();
 	virtual void update();
 	virtual void draw(int x, int y);
 	void setID(int ID);
@@ -24,14 +24,14 @@ public:
 
 	struct material
 	{
-		serviceLocator::materialTypes type;
-		serviceLocator::toolTypes effectiveTool;
+		//serviceLocator::materialTypes type;
+		//serviceLocator::toolTypes effectiveTool;
 		int harvestLevel;
 		int baseHarvestTime;
 	};
 
 protected:
-	serviceLocator* mySL;
+	resourceLocator myRL;
 	bool loadSurface(std::string path);
 	material blockMaterial;
 	

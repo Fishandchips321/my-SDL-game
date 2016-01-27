@@ -5,30 +5,16 @@
 #include <fstream>
 
 
-worldGrid::worldGrid(serviceLocator* SL)
+worldGrid::worldGrid()
 {
-	mySL = SL;
-	if (mySL == NULL)
-	{
-		std::cout << "Service Locator is NULL in WorldGrid" << std::endl;
-		SDL_Delay(5000);
-	}
-	chunk tempChunk(mySL, 0, 0);
+	
+	chunk tempChunk(0, 0);
 	chunkSize = tempChunk.chunkSize;
 }
 
-bool worldGrid::setServiceLocator(serviceLocator* SL)
+void worldGrid::update()
 {
-	std::cout << "setServiceLocator Called" << std::endl;
-	mySL = SL;
-	if (mySL != NULL)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+
 }
 
 bool worldGrid::placeBlock(int x, int y, int type)//if false, the player class will try to right click the block
@@ -38,19 +24,9 @@ bool worldGrid::placeBlock(int x, int y, int type)//if false, the player class w
 		return false;
 	}
 
-	x -= mySL->globalRenderer.xOffset;
-	y -= mySL->globalRenderer.yOffset;
-	
-	x /= mySL->tileWidth;
-	y /= mySL->tileHeight;
-
 	int chunkX, chunkY;
 
-	chunkX = x / chunkSize;
-	chunkY = y / chunkSize;
-
-	x -= chunkGrid[chunkX][chunkY]->chunkRect.x / mySL->tileWidth;
-	y -= chunkGrid[chunkX][chunkY]->chunkRect.y / mySL->tileHeight;
+	getChunkBlock(&x, &y, &chunkX, &chunkY);
 
 
 	return chunkGrid[chunkX][chunkY]->placeBlock(x, y, type);
@@ -63,27 +39,9 @@ bool worldGrid::breakBlock(int x, int y)
 		return false;
 	}
 
-	//chunkX = x / chunkSize <- find the chunk
-
-	x -= mySL->globalRenderer.xOffset;
-	y -= mySL->globalRenderer.yOffset;
-
-	x /= mySL->tileWidth;
-	y /= mySL->tileHeight;
-
 	int chunkX, chunkY;
 
-	chunkX = x / chunkSize;
-	chunkY = y / chunkSize;
-
-	x -= chunkGrid[chunkX][chunkY]->chunkRect.x / mySL->tileWidth;
-	y -= chunkGrid[chunkX][chunkY]->chunkRect.y / mySL->tileHeight;
-
-	if (x < 0 || x > 9 || y < 0 || y > 9)
-	{
-		std::cout << "[ERROR]: Incorrect positioning data from WorldGrid::breakBlock" << std::endl;
-		return false;
-	}
+	getChunkBlock(&x, &y, &chunkX, &chunkY);
 
 	return chunkGrid[chunkX][chunkY]->breakBlock(x, y);
 	//return false;
@@ -96,19 +54,9 @@ bool worldGrid::leftClickBlock(int x, int y)
 		return false;
 	}
 
-	x -= mySL->globalRenderer.xOffset;
-	y -= mySL->globalRenderer.yOffset;
-
-	x /= mySL->tileWidth;
-	y /= mySL->tileHeight;
-
 	int chunkX, chunkY;
 
-	chunkX = x / chunkSize;
-	chunkY = y / chunkSize;
-
-	x -= chunkGrid[chunkX][chunkY]->chunkRect.x / mySL->tileWidth;
-	y -= chunkGrid[chunkX][chunkY]->chunkRect.y / mySL->tileHeight;
+	getChunkBlock(&x, &y, &chunkX, &chunkY);
 
 	return chunkGrid[chunkX][chunkY]->leftClickBlock(x, y);
 }
@@ -121,21 +69,27 @@ bool worldGrid::rightClickBlock(int x, int y)
 		return false;
 	}
 
-	x -= mySL->globalRenderer.xOffset;
-	y -= mySL->globalRenderer.yOffset;
-
-	x /= mySL->tileWidth;
-	y /= mySL->tileHeight;
-
 	int chunkX, chunkY;
 
-	chunkX = x / chunkSize;
-	chunkY = y / chunkSize;
-
-	x -= chunkGrid[chunkX][chunkY]->chunkRect.x / mySL->tileWidth;
-	y -= chunkGrid[chunkX][chunkY]->chunkRect.y / mySL->tileHeight;
+	getChunkBlock(&x, &y, &chunkX, &chunkY);
 
 	return chunkGrid[chunkX][chunkY]->rightClickBlock(x, y);
+}
+
+void worldGrid::getChunkBlock(int *x, int *y, int *chunkX, int *chunkY)
+{
+
+	*x -= myRL.globalRenderer->xOffset;
+	*y -= myRL.globalRenderer->yOffset;
+
+	*x /= myRL.tileWidth;
+	*y /= myRL.tileHeight;
+
+	*chunkX = *x / chunkSize;
+	*chunkY = *y / chunkSize;
+
+	*x -= chunkGrid[*chunkX][*chunkY]->chunkRect.x / myRL.tileWidth;
+	*y -= chunkGrid[*chunkX][*chunkY]->chunkRect.y / myRL.tileHeight;
 }
 
 
@@ -202,7 +156,7 @@ bool worldGrid::useDefaultGrid() //for testing purposes
 		std::vector<chunk* > tempChunks;
 		for (int j = 0; j < width; j++)
 		{
-			chunk* tempChunk = new chunk(mySL, i, j);
+			chunk* tempChunk = new chunk(i, j);
 			tempChunks.push_back(tempChunk);
 		}
 		chunkGrid.push_back(tempChunks);
@@ -217,14 +171,14 @@ bool worldGrid::useDefaultGrid() //for testing purposes
 			{
 				for (int y = 0; y < 10; y++)
 				{
-					bool success = chunkGrid[i][j]->loadTile(mySL->myTileService->grass, x, y);
+					bool success = chunkGrid[i][j]->loadTile(myRL.myTileService->grass, x, y);
 
 					if (success == false)
 					{
 						return false;
 					}
 
-					success = chunkGrid[i][j]->loadBlock(mySL->myBlockService->air, x, y);
+					success = chunkGrid[i][j]->loadBlock(myRL.myBlockService->air, x, y);
 
 					if (success == false)
 					{
