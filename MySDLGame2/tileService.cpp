@@ -1,5 +1,7 @@
 #include "tileService.h"
 
+std::vector<tile* > tileService::tiles;
+std::vector<tile* > tileService::updates;
 
 tileService::tileService()
 {

@@ -1,8 +1,8 @@
 #include "entityService.h"
 
+std::vector<entity* > entityService::entities;
 
-entityService::entityService(serviceLocator* SL)
-	:mySL(SL)
+entityService::entityService()
 {
 }
 
@@ -12,32 +12,28 @@ void entityService::update()
 	//clear the entity cache of each loaded chunk (if chunk != NULL)
 	//re-register all entities to chunks
 
-	//this checks collisions between ALL entities. have each chunk have a vector of entities and register each entity to chunks every tick after clearing out the vector
-	//needs 2 more for loops to go through all chunks
-	//check for collisions
-	for (int i = 0; i < int(entities.size()); i++)//go through the list and check that entity with every other entity in the list
+	for (size_t i = 0; i < entities.size(); i++)
 	{
-		for (int j = i + 1; j < int(entities.size()); j++)//start checking from the entity next in the list. all entities will be checked with each other once
-		{
-			if (j != i)//don't check collisions with the same entity
-			{
-				if (detectCollision(entities[i], entities[j]))
-				{
-					entities[i]->onCollide(entities[j]);
-				}
-			}	
-		}
+		entities[i]->update();
+	}
+}
+
+void entityService::eventUpdate()
+{
+	for (size_t i = 0; i < entities.size(); i++)
+	{
+		entities[i]->eventUpdate();
 	}
 }
 
 void entityService::draw()
 {
 	//if the entity is on the screen draw it
-	for (int i = 0; i < int(entities.size()); i++) //doesn't count the element at size
+	for (int i = 0; i < int(entities.size()); i++) //doesn't count the element at value "size"
 	{
-		if (entities[i]->entityRect.x >= 0 && (entities[i]->entityRect.x + entities[i]->entityRect.w) <= mySL->globalRenderer.screenWidth)
+		if (entities[i]->entityRect.x >= 0 && (entities[i]->entityRect.x + entities[i]->entityRect.w) <= render::screenWidth)
 		{
-			if (entities[i]->entityRect.y >= 0 && (entities[i]->entityRect.y + entities[i]->entityRect.h) <= mySL->globalRenderer.screenHeight)
+			if (entities[i]->entityRect.y >= 0 && (entities[i]->entityRect.y + entities[i]->entityRect.h) <= render::screenHeight)
 			{
 				entities[i]->draw();
 			}
@@ -49,19 +45,6 @@ bool entityService::registerEntity(entity* newEnt)
 {
 	entities.push_back(newEnt);
 	if (entities.back() == newEnt)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool entityService::registerGrid(worldGrid* currentGrid)
-{
-	grid = currentGrid;
-	if (grid == currentGrid)
 	{
 		return true;
 	}
@@ -93,7 +76,7 @@ bool entityService::detectCollision(entity* entity1, entity* entity2)
 	return 0;
 }
 
-bool entityService::detectCollision(entity* ent, block* blk)
+bool entityService::detectCollision(entity* ent, int x, int y)
 {
 	return 0;
 }

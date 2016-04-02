@@ -1,84 +1,41 @@
 #include "imageService.h"
 #include <iostream>
 
+std::vector<TTF_Font* > imageService::loadedFonts;
 
 imageService::imageService()
 {
 }
 
-bool imageService::loadImage(std::string path)
+
+SDL_Texture* imageService::loadTexture(std::string path)
 {
+	SDL_Texture* loadTexture(std::string path);
+	{
+		//The final texture
+		SDL_Texture* newTexture = NULL;
 
-	if (globalRenderer == NULL)
-	{
-		std::cout << "[ERROR]: the global renderer pointer is NULL. image service can't load textures" << std::endl;
-		return false;
-	}
-	//check if the image has already been loaded
-	for (int i = 0; i < surfacesPointer; i++)
-	{
-		if (loadedSurfaces[i] == path)
+		//Load image at specified path
+		SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+		if (loadedSurface == NULL)
 		{
-			std::cout << "[WARN]: The image \"" << path << "\" has already been registered." << std::endl;
-			return false;
+			std::cout << "[ERROR]: Unable to load image " << path << "! SDL_image Error: " << IMG_GetError() << std::endl;
 		}
-
-		if (surfaces[i] == NULL)//check if the surface has something loaded (it should have something loaded - 0 to last loaded image)
+		else
 		{
-			std::cout << "[ERROR]: The image at index "<< i << " is NULL" << std::endl;
-			return false;
+			//Create texture from surface pixels
+			newTexture = SDL_CreateTextureFromSurface(render::renderer, loadedSurface);
+			if (newTexture == NULL)
+			{
+				std::cout << "[ERROR]: Unable to create texture from " << path << "!SDL Error : " << SDL_GetError() << std::endl;
+			}
+
+			//Get rid of old loaded surface
+			SDL_FreeSurface(loadedSurface);
 		}
+		std::cout << "[INFO]: The image \"" << path << "\" was loaded and made into a texture" << std::endl;
+		return newTexture;
 	}
-
-	SDL_Surface* surface = IMG_Load(path.c_str());//load the image to the surface
-
-	if (surface == NULL)
-	{
-		std::cout << "[ERROR]: The path at " << path.c_str() << "couldn't be loaded SDL_ERROR" << SDL_GetError() << std::endl;
-		return false;
-	}
-
-	surface = SDL_ConvertSurface(surface, globalRenderer->screenSurface->format, NULL);//optimise the surface
-
-	surfaces.push_back(surface);//add the surface to the vector
-	//check if the image was actually loaded
-	if (surfaces[surfacesPointer] != NULL)
-	{
-		std::cout << "[INFO]: The image \"" << path << "\" was loaded at position " << surfacesPointer << std::endl;
-		loadedSurfaces.push_back(path);
-		surfacesPointer++;
-		return true;
-	}
-	std::cout << "[ERROR]: the surface at " << surfacesPointer << " was NULL";
-	return false;
-}
-
-SDL_Surface* imageService::loadImageReturn(std::string path)
-{
-
-	if (globalRenderer == NULL)
-	{
-		std::cout << "[ERROR]: the global renderer pointer is NULL. image service can't load textures" << std::endl;
-		return NULL;
-	}
-
-	SDL_Surface* surface = IMG_Load(path.c_str());//load the image to the surface
-
-	if (surface == NULL)
-	{
-		std::cout << "[ERROR]: The path at " << path << "couldn't be loaded SDL_ERROR" << SDL_GetError() << std::endl;
-		return NULL;
-	}
-
-	surface = SDL_ConvertSurface(surface, globalRenderer->screenSurface->format, NULL);//optimise the surface
-
-	if (surface != NULL)
-	{
-		std::cout << "[INFO]: The image \"" << path << "\" was loaded" << std::endl;
-		return surface;
-	}
-	std::cout << "[ERROR]: the surface loaded with \"" << path << "\" was NULL";
-	return NULL;
 }
 
 SDL_Surface* imageService::loadText(std::string text, SDL_Color colour, int font)
@@ -91,7 +48,7 @@ SDL_Surface* imageService::loadText(std::string text, SDL_Color colour, int font
 		return false;
 	}
 
-	SDL_ConvertSurface(textSurface, globalRenderer->screenSurface->format, NULL);//optimise the surface
+	SDL_ConvertSurface(textSurface, render::screenSurface->format, NULL);//optimise the surface
 
 	return textSurface;
 }
@@ -102,15 +59,6 @@ bool imageService::loadFont(std::string path, int size)
 	if (loadedFonts.back() == NULL)
 	{
 		std::cout << "[ERROR]: Couldn't load font \"" << path << "\". SDL_ERROR: " << SDL_GetError() << std::endl;
-		return false;
-	}
-	return true;
-}
-
-bool imageService::isIndexLoaded(int index)
-{
-	if (surfaces[index] == NULL)
-	{
 		return false;
 	}
 	return true;

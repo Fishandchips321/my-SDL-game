@@ -3,25 +3,27 @@
 
 entity::entity()
 {
-	entitySurface = myRL.myImageService->loadImageReturn("assets/Textures/missing texture.png");
-	entityRect = { 0, 0, entitySurface->w, entitySurface->h };
+	entityTexture = imageService::loadTexture("assets/Textures/missing texture.png");
+	int w, h;
+	SDL_QueryTexture(entityTexture, NULL, NULL, &w, &h);
+	entityRect = { 0, 0, w, h };
 }
 
 void entity::update()
 {}
 
-void entity::eventUpdate(SDL_Event nextEvent)
+void entity::eventUpdate()
 {}
 
 void entity::draw()
 {
 	SDL_Rect drawRect;
-	drawRect.x = entityRect.x + myRL.globalRenderer->xOffset;
-	drawRect.x = entityRect.x + myRL.globalRenderer->yOffset;
+	drawRect.x = entityRect.x + render::xOffset;
+	drawRect.x = entityRect.x + render::yOffset;
 	drawRect.w = entityRect.w;
 	drawRect.h = entityRect.h;
 
-	myRL.globalRenderer->drawScaledSurface(entitySurface, drawRect);
+	render::drawTexture(entityTexture, &drawRect);
 }
 
 void entity::onCollide(entity* collider)

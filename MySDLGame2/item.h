@@ -1,21 +1,20 @@
 #pragma once
-#include "serviceLocator.h"
+#include "resources.h"
+#include "imageService.h"
 class item
 {
 public:
 	item();
-	virtual void onRightClick();
-	virtual void onLeftClick();
-	virtual void onDrop();
-	virtual void update();
-	virtual void draw();
-	bool setSL(serviceLocator* SL);
+	virtual bool onRightClick();
+	virtual bool onLeftClick();
+	virtual bool onDrop();
+	virtual int getMetadata(int metadata);
+	virtual bool onPlace(int x, int y);
 	~item();
 
-	int type;
-	int maxStack;
-	int damageState;
+	double weight;
+	SDL_Texture* iTexture;
 protected:
-	serviceLocator* mySL;
+	//resourceLocator myRL;
 };
 

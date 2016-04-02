@@ -5,12 +5,12 @@ class tileService
 {
 public:
 	tileService();
-	void update();
-	int registerTile(tile* newTile);
-	bool registerForUpdtaes(tile* newTile);// for animation updates
+	static void update();
+	static int registerTile(tile* newTile);
+	static bool registerForUpdtaes(tile* newTile);// for animation updates
 	~tileService();
 
-	std::vector<tile* > tiles;
+	static std::vector<tile* > tiles;
 
 	enum tileTypes
 	{
@@ -19,6 +19,6 @@ public:
 	};
 
 private:
-	std::vector<tile* > updates;
+	static std::vector<tile* > updates;
 };
 

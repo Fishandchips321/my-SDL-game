@@ -2,7 +2,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
-#include "resourceLocator.h"
+#include "render.h"
+#include "imageService.h"
+#include "resources.h"
 
 class tile
 {
@@ -18,8 +20,7 @@ public:
 	int tileID;
 
 protected:
-	resourceLocator myRL;
-	bool loadSurface(std::string path);
+	bool loadTexture(std::string path);
 private:
-	SDL_Surface* surface;
+	SDL_Texture* texture;
 };

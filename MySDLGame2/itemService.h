@@ -1,15 +1,13 @@
 #pragma once
 #include "item.h"
+#include <vector>
 class itemService
 {
 public:
 	itemService();
-	item* getItem(int type);
+	bool registerItme(item* i);
 	~itemService();
-
-	enum itemTypes
-	{
-		none
-	};
+private:
+	std::vector<item* > items;
 };
 

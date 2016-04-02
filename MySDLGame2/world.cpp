@@ -1,5 +1,8 @@
 #include "world.h"
 
+std::vector<worldGrid* > world::grids;
+int world::currentGrid;
+std::string world::worldName;
 
 world::world()
 {
@@ -70,7 +73,7 @@ bool world::leftClickBlock(int x, int y)
 
 world::~world()
 {
-	for (int i = 0; i < (int)grids.size; i++)
+	for (size_t i = 0; i < grids.size(); i++)
 	{
 		delete grids[i];
 		grids[i] = NULL;

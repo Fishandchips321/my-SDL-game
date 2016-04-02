@@ -4,23 +4,39 @@
 player::player()
 {
 	//setup player dimensions for collision detection
-	entityRect.w = 20;
-	entityRect.h = 40;
+	entityRect.w = 30;
+	entityRect.h = 60;
 	//center the player rect
-	entityRect.x = (myRL.globalRenderer->screenWidth / 2) - (entityRect.w / 2);
-	entityRect.y = (myRL.globalRenderer->screenHeight / 2) - (entityRect.h / 2);
+	entityRect.x = (render::screenWidth / 2) - (entityRect.w / 2);
+	entityRect.y = (render::screenHeight / 2) - (entityRect.h / 2);
 	//register the player inventory and get the pointer for it
-	playerInvIndex = myRL.myInventoryService->registerInventory();
-	playerInv = myRL.myInventoryService->getPointer(playerInvIndex);
+	playerInvIndex = inventoryService::registerInventory();
+	playerInv = inventoryService::getPointer(playerInvIndex);
+
+	for (int x = 0; x < 5; x++)
+	{
+		itemStack s;
+		s.SItem = nullptr;
+		//to be removed - for testing
+		if (x == 0)
+		{
+			testBlockItem *t = new testBlockItem;
+			s.SItem = t;
+		}
+
+		playerInv->itemStacks.push_back(s);
+	}
 
 	viewport = { 18, 652, 29, 51 }; //x, y, w, h
 
-	entitySurface = myRL.myImageService->loadImageReturn("assets/Textures/SaraFullSheet.png");
+	entityTexture = imageService::loadTexture("assets/Textures/SaraFullSheet.png");
+
+	speed = 1;
 }
 
 void player::draw()
 {
-	myRL.globalRenderer->drawViewportSurface(entitySurface, viewport, entityRect);
+	render::drawTexture(entityTexture, &entityRect, &viewport);
 
 	animate();
 }
@@ -44,17 +60,17 @@ void player::update()
 {
 	move(); //get x and y vel
 	//change the global render offsets
-	myRL.globalRenderer->xOffset -= xVel;
-	myRL.globalRenderer->yOffset -= yVel;
+	render::xOffset -= xVel;
+	render::yOffset -= yVel;
 	//stop the player from going off the screen
-	if (myRL.globalRenderer->xOffset > 0)
+	if (render::xOffset > 0)
 	{
-		myRL.globalRenderer->xOffset = 0;
+		render::xOffset = 0;
 	}
 
-	if (myRL.globalRenderer->yOffset > 0)
+	if (render::yOffset > 0)
 	{
-		myRL.globalRenderer->yOffset = 0;
+		render::yOffset = 0;
 	}
 	//update the place timer
 	if (placeTimer > 0)
@@ -62,42 +78,45 @@ void player::update()
 	//if the right mouse button is down, place a block
 	if (SDL_GetMouseState(&mPos.x, &mPos.y) & SDL_BUTTON_RMASK && placeTimer == 0)
 	{
-		if (!myRL.myWorld->placeBlock(mPos.x, mPos.y, 1))
+		bool action = false;
+		if (world::rightClickBlock(mPos.x, mPos.y))
+			action = true;
+		if (playerInv->itemStacks[selectedItem].SItem != nullptr)
 		{
-			myRL.myWorld->rightClickBlock(mPos.x, mPos.y);
+			if (playerInv->itemStacks[selectedItem].SItem->onRightClick() && !action)
+				action = true;
+
+			if (playerInv->itemStacks[selectedItem].SItem->onPlace(mPos.x, mPos.y) && !action)
+				action = true;
 		}
+
 		placeTimer = placeTimerStart;
 	}
 	//if the left mouse button is down, break the block
 	if (SDL_GetMouseState(&mPos.x, &mPos.y) & SDL_BUTTON_LMASK)
 	{
-		if (!myRL.myWorld->breakBlock(mPos.x, mPos.y))
+		if (!world::breakBlock(mPos.x, mPos.y))
 		{
-			myRL.myWorld->leftClickBlock(mPos.x, mPos.y);
+			world::leftClickBlock(mPos.x, mPos.y);
 		}
 	}
 }
 
-void player::eventUpdate(SDL_Event nextEvent)
+void player::eventUpdate()
 {
-	if (nextEvent.type == SDL_MOUSEWHEEL)
+	if (resources::currentEvent->type == SDL_MOUSEWHEEL)
 	{
-		selectedItem += nextEvent.wheel.y;
-		if (selectedItem >= 9)
+		selectedItem += resources::currentEvent->wheel.y;
+		if (selectedItem > 4)
 		{
 			selectedItem = 0;
 		}
+
+		if (selectedItem < 0)
+		{
+			selectedItem = 4;
+		}
 	}
-}
-
-void player::tickBreak()
-{
-
-}
-
-void player::placeBlock()
-{
-
 }
 
 void player::move()
@@ -152,11 +171,6 @@ void player::move()
 	{
 		xVel = 0;
 	}
-}
-
-inventory* player::getInvPointer()
-{
-	return playerInv;
 }
 
 player::~player()

@@ -6,12 +6,12 @@ class inventoryService
 {
 public:
 	inventoryService();
-	int registerInventory();
-	bool registerInventoryAt(int index);
-	inventory* getPointer(int index);
-	bool destroyInventory(int index);
+	static int registerInventory();
+	static bool registerInventoryAt(int index);
+	static inventory* getPointer(int index);
+	static bool destroyInventory(int index);
 	~inventoryService();
 
-	std::vector<inventory* > inventories;
+	static std::vector<inventory* > inventories;
 };
 

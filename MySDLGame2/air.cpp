@@ -1,8 +1,7 @@
 #include "air.h"
 
 
-air::air(serviceLocator *SL)
-	:block(SL)
+air::air()
 {
 }
 

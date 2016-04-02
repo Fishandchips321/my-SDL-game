@@ -1,10 +1,7 @@
 #pragma once
 #include "entity.h"
-#include "chunk.h"
-#include "block.h"
 #include "worldGrid.h"
-#include "serviceLocator.h"
-#include "vector"
+#include "resources.h"
 
 //todo
 //write functions to check collisions
@@ -14,18 +11,17 @@
 class entityService
 {
 public:
-	entityService(serviceLocator* SL);
-	void update();
-	void draw();
-	bool registerEntity(entity* newEnt);
-	bool registerGrid(worldGrid* currentGrid);
+	entityService();
+	static void update();
+	static void eventUpdate();
+	static void draw();
+	static bool registerEntity(entity* newEnt);
 	~entityService();
 
-private:
-	bool detectCollision(entity* entity1, entity* entity2);
-	bool detectCollision(entity* ent, block* blk);
-	serviceLocator* mySL;
-	std::vector<entity* > entities;
-	worldGrid* grid;
+	//called by chunk
+	static bool detectCollision(entity* entity1, entity* entity2);
+	static bool detectCollision(entity* ent, int x, int y);
+
+	static std::vector<entity* > entities;
 };
 

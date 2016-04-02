@@ -3,7 +3,7 @@
 
 testBlock::testBlock()
 {
-	loadSurface("assets/Textures/test block.png");
+	loadTexture("assets/Textures/test block.png");
 }
 
 testBlock::~testBlock()

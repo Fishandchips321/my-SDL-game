@@ -50,7 +50,7 @@
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
-      <ShowIncludes>true</ShowIncludes>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -77,73 +77,69 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="blockService.cpp" />
     <ClCompile Include="chunk.cpp" />
-    <ClCompile Include="consoleService.cpp" />
+    <ClCompile Include="container.cpp" />
     <ClCompile Include="counter.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="entityService.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="grassTile.cpp" />
-    <ClCompile Include="gridService.cpp" />
     <ClCompile Include="imageService.cpp" />
     <ClCompile Include="initializer.cpp" />
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="inventoryService.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="itemSelectUI.cpp" />
+    <ClCompile Include="itemSelectWidget.cpp" />
     <ClCompile Include="itemService.cpp" />
     <ClCompile Include="itemStack.cpp" />
+    <ClCompile Include="itemStackEnt.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="playerService.cpp" />
     <ClCompile Include="render.cpp" />
-    <ClCompile Include="resourceLocator.cpp" />
-    <ClCompile Include="scriptHandler.cpp" />
-    <ClCompile Include="scriptService.cpp" />
+    <ClCompile Include="resources.cpp" />
     <ClCompile Include="SDLFileService.cpp" />
-    <ClCompile Include="serviceLocator.cpp" />
     <ClCompile Include="testBlock.cpp" />
+    <ClCompile Include="testBlockItem.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="tileService.cpp" />
-    <ClCompile Include="widget.cpp" />
+    <ClCompile Include="UIService.cpp" />
     <ClCompile Include="world.cpp" />
     <ClCompile Include="worldGen.cpp" />
     <ClCompile Include="worldGrid.cpp" />
-    <ClCompile Include="worldService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="air.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="blockService.h" />
     <ClInclude Include="chunk.h" />
-    <ClInclude Include="consoleService.h" />
+    <ClInclude Include="container.h" />
     <ClInclude Include="counter.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="entityService.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="grassTile.h" />
-    <ClInclude Include="gridService.h" />
     <ClInclude Include="imageService.h" />
     <ClInclude Include="initializer.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="inventoryService.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="itemSelectUI.h" />
+    <ClInclude Include="itemSelectWidget.h" />
     <ClInclude Include="itemService.h" />
     <ClInclude Include="itemStack.h" />
+    <ClInclude Include="itemStackEnt.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="playerService.h" />
     <ClInclude Include="render.h" />
-    <ClInclude Include="resourceLocator.h" />
-    <ClInclude Include="scriptHandler.h" />
-    <ClInclude Include="scriptService.h" />
+    <ClInclude Include="resources.h" />
     <ClInclude Include="SDLFileService.h" />
-    <ClInclude Include="serviceLocator.h" />
     <ClInclude Include="testBlock.h" />
+    <ClInclude Include="testBlockItem.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="tileService.h" />
-    <ClInclude Include="widget.h" />
+    <ClInclude Include="UIService.h" />
     <ClInclude Include="world.h" />
     <ClInclude Include="worldGen.h" />
     <ClInclude Include="worldGrid.h" />
-    <ClInclude Include="worldService.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AI_Follow.lua" />

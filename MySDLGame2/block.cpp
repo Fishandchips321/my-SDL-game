@@ -1,23 +1,22 @@
 #include "block.h"
-#include "blockService.h"
 
 block::block()
 {
-	surface = myRL.myImageService->loadImageReturn("assets/Textures/missing texture.png");
+	texture = imageService::loadTexture("assets/Textures/missing texture.png");
 }
 
 void block::draw(int x, int y)
 {
-	drawRect.x = x + myRL.globalRenderer->xOffset;
-	drawRect.y = y + myRL.globalRenderer->yOffset;
-	drawRect.w = blockWidth;
-	drawRect.h = blockHeight;
+	drawRect.x = x + render::xOffset;
+	drawRect.y = y + render::yOffset;
+	drawRect.w = resources::tileWidth;
+	drawRect.h = resources::tileHeight;
 
-	if (drawRect.x + drawRect.w > 0 && drawRect.x < myRL.globalRenderer->screenWidth)
+	if (drawRect.x + drawRect.w > 0 && drawRect.x < render::screenWidth)
 	{
-		if (drawRect.y + drawRect.h > 0 && drawRect.y < myRL.globalRenderer->screenHeight)
+		if (drawRect.y + drawRect.h > 0 && drawRect.y < render::screenHeight)
 		{
-			myRL.globalRenderer->drawSurface(surface, drawRect);
+			render::drawTexture(texture, &drawRect);
 		}
 	}
 }
@@ -27,14 +26,14 @@ void block::update()
 
 }
 
-bool block::onLeftClick() //returns false if the operation couldn't be completed
+bool block::onLeftClick() //returns false if nothing happened/nothing was done
 {
-	return true;
+	return false;
 }
 
-bool block::onRightClick() //returns false if the operation couldn't be completed
+bool block::onRightClick() //returns false if nothing happened
 {
-	return true;
+	return false;
 }
 
 bool block::onCollision() // returns true if the block is solid
@@ -44,7 +43,7 @@ bool block::onCollision() // returns true if the block is solid
 
 bool block::onMouseHover()
 {
-	return true;
+	return false;
 }
 
 bool block::onPlace() //returns false if the block shouldn't be placed (the block is placed, does a check and then determines whether it can stay)
@@ -57,9 +56,9 @@ bool block::onBreak() //returns true to break the block
 	return true;
 }
 
-bool block::loadSurface(std::string path)
+bool block::loadTexture(std::string path)
 {
-	surface = myRL.myImageService->loadImageReturn(path);
+	texture = imageService::loadTexture(path);
 	return true;
 }
 

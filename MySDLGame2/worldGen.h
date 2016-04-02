@@ -1,7 +1,7 @@
 #pragma once
 // this class will be used by the worldGrid class to generate new chunks
 //it will return the generated chunks from the x and y coordinated passed into it
-#include "resourceLocator.h"
+#include "resources.h"
 #include "chunk.h"
 class worldGen
 {
@@ -10,6 +10,5 @@ public:
 	chunk generateChunk(int x, int y);
 	~worldGen();
 private:
-	resourceLocator myRL;
 	int genSeed;
 };

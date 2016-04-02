@@ -19,7 +19,7 @@ void worldGrid::update()
 
 bool worldGrid::placeBlock(int x, int y, int type)//if false, the player class will try to right click the block
 {
-	if (x > (gridWidth * 10) * 20 || y > (gridHeight * 10) * 20)
+	if (x > (gridWidth * 10) * resources::tileWidth || y > (gridHeight * 10) * resources::tileHeight)
 	{
 		return false;
 	}
@@ -30,6 +30,20 @@ bool worldGrid::placeBlock(int x, int y, int type)//if false, the player class w
 
 
 	return chunkGrid[chunkX][chunkY]->placeBlock(x, y, type);
+}
+
+bool worldGrid::placeBlockEntity(int x, int y, block* blockEntity)
+{
+	if (x > (gridWidth * 10) * 20 || y > (gridHeight * 10) * 20)
+	{
+		return false;
+	}
+
+	int chunkX, chunkY;
+
+	getChunkBlock(&x, &y, &chunkX, &chunkY);
+
+	return chunkGrid[chunkX][chunkY]->placeBlock(x, y, blockEntity);
 }
 
 bool worldGrid::breakBlock(int x, int y)
@@ -79,17 +93,17 @@ bool worldGrid::rightClickBlock(int x, int y)
 void worldGrid::getChunkBlock(int *x, int *y, int *chunkX, int *chunkY)
 {
 
-	*x -= myRL.globalRenderer->xOffset;
-	*y -= myRL.globalRenderer->yOffset;
+	*x -= render::xOffset;
+	*y -= render::yOffset;
 
-	*x /= myRL.tileWidth;
-	*y /= myRL.tileHeight;
+	*x /= resources::tileWidth;
+	*y /= resources::tileHeight;
 
 	*chunkX = *x / chunkSize;
 	*chunkY = *y / chunkSize;
 
-	*x -= chunkGrid[*chunkX][*chunkY]->chunkRect.x / myRL.tileWidth;
-	*y -= chunkGrid[*chunkX][*chunkY]->chunkRect.y / myRL.tileHeight;
+	*x -= chunkGrid[*chunkX][*chunkY]->chunkRect.x / resources::tileWidth;
+	*y -= chunkGrid[*chunkX][*chunkY]->chunkRect.y / resources::tileHeight;
 }
 
 
@@ -171,14 +185,14 @@ bool worldGrid::useDefaultGrid() //for testing purposes
 			{
 				for (int y = 0; y < 10; y++)
 				{
-					bool success = chunkGrid[i][j]->loadTile(myRL.myTileService->grass, x, y);
+					bool success = chunkGrid[i][j]->loadTile(tileService::grass, x, y);
 
 					if (success == false)
 					{
 						return false;
 					}
 
-					success = chunkGrid[i][j]->loadBlock(myRL.myBlockService->air, x, y);
+					success = chunkGrid[i][j]->loadBlock(blockService::air, x, y);
 
 					if (success == false)
 					{

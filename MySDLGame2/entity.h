@@ -1,12 +1,13 @@
 #pragma once
-#include "resourceLocator.h"
+#include "resources.h"
 #include "block.h"
+#include "inventory.h"
 class entity
 {
 public:
 	entity();
 	virtual void update();
-	virtual void eventUpdate(SDL_Event nextEvent);
+	virtual void eventUpdate();
 	virtual void draw();
 	virtual void onCollide(entity* collider);
 	virtual void onCollide(block* collider);
@@ -14,10 +15,10 @@ public:
 	virtual bool push(int x, int y);
 
 	SDL_Rect entityRect;
-	SDL_Surface* entitySurface;
+	SDL_Texture* entityTexture;
+	inventory* entInv;
+	int xVel, yVel;
+	int speed;
 	~entity();
-
-protected:
-	resourceLocator myRL;
 };
 

@@ -1,10 +1,14 @@
 #pragma once
-#include "serviceLocator.h"
+#include "resources.h"
 #include "counter.h"
+#include "world.h"
+#include "render.h"
+#include "entityService.h"
+#include "UIService.h"
 class game
 {
 public:
-	game(serviceLocator *SL);
+	game();
 	bool startGameLoop();
 	bool init();
 	~game();
@@ -19,7 +23,6 @@ private:
 		end
 	};
 
-	serviceLocator *mySL;
 	const int FPS = 60;
 	const int screenTicksPerFrame = 1000 / FPS;
 	gameStates myGameState;

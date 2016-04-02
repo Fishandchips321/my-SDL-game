@@ -3,7 +3,7 @@
 
 grassTile::grassTile()
 {
-	loadSurface("assets/Textures/grass.png");
+	loadTexture("assets/Textures/grass.png");
 }
 
 grassTile::~grassTile()

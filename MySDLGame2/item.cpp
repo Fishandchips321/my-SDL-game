@@ -3,49 +3,34 @@
 
 item::item()
 {
+	iTexture = imageService::loadTexture("assets/Textures/missing texture.png");
 }
 
-void item::onDrop()
+bool item::onDrop()
 {
-
+	return false;
 }
 
-void item::onLeftClick()
+bool item::onLeftClick()
 {
-
+	return false;
 }
 
-void item::onRightClick()
+bool item::onRightClick()
 {
-
+	return false;
 }
 
-void item::update()
+int item::getMetadata(int metadata)
 {
-
+	return 0;
 }
 
-void item::draw()
+bool item::onPlace(int x, int y)
 {
-
+	return false;
 }
 
-bool item::setSL(serviceLocator* SL)
-{
-	if (SL == NULL)
-	{
-		return false;
-	}
-
-	mySL = SL;
-
-	if (mySL == NULL)
-	{
-		return false;
-	}
-
-	return true;
-}
 
 item::~item()
 {

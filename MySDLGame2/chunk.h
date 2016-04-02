@@ -1,8 +1,10 @@
 #pragma once
-#include "resourceLocator.h"
+#include "resources.h"
 #include "tile.h"
 #include "block.h"
 #include "entity.h"
+#include "blockService.h"
+#include "tileService.h"
 #include <vector>
 class chunk
 {
@@ -10,6 +12,7 @@ public:
 	chunk( int x, int y);
 	void draw();
 	bool placeBlock(int x, int y, int type);
+	bool placeBlock(int x, int y, block* nBlock);
 	bool breakBlock(int x, int y);
 	bool leftClickBlock(int x, int y);
 	bool rightClickBlock(int x, int y);
@@ -39,8 +42,6 @@ public:
 		int metadata;
 	};
 private:
-	resourceLocator myRL;
-
 	tileStack tiles[10][10];
 	blockStack blocks[10][10];
 };

@@ -70,27 +70,30 @@
     <Filter Include="Source Files\Scripts\Item scripts">
       <UniqueIdentifier>{95d998e8-9236-4b27-98dc-b3d454d4a08f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\UI\Main menu">
+      <UniqueIdentifier>{de6644df-2bdf-49e5-831f-923019576011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\Main menu">
+      <UniqueIdentifier>{c9fdfb78-f37a-4004-bd32-3d4fffaa4c38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI\Inventory">
+      <UniqueIdentifier>{e8650dfc-9b6c-481d-b418-070ed2348781}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\Inventory">
+      <UniqueIdentifier>{4e35cbac-bb3d-4641-a832-1adbf2262e5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\Game">
+      <UniqueIdentifier>{84aade7c-bf88-4049-9f4c-b18850fe8eb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI\Game">
+      <UniqueIdentifier>{541d2986-4303-43ee-99fb-d9fd0b211a76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="serviceLocator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="render.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="consoleService.cpp">
-      <Filter>Source Files\services</Filter>
-    </ClCompile>
-    <ClCompile Include="gridService.cpp">
-      <Filter>Source Files\services</Filter>
-    </ClCompile>
     <ClCompile Include="imageService.cpp">
-      <Filter>Source Files\services</Filter>
-    </ClCompile>
-    <ClCompile Include="playerService.cpp">
       <Filter>Source Files\services</Filter>
     </ClCompile>
     <ClCompile Include="SDLFileService.cpp">
@@ -98,9 +101,6 @@
     </ClCompile>
     <ClCompile Include="world.cpp">
       <Filter>Source Files\world</Filter>
-    </ClCompile>
-    <ClCompile Include="worldService.cpp">
-      <Filter>Source Files\services</Filter>
     </ClCompile>
     <ClCompile Include="worldGrid.cpp">
       <Filter>Source Files\world</Filter>
@@ -150,12 +150,6 @@
     <ClCompile Include="tileService.cpp">
       <Filter>Source Files\services</Filter>
     </ClCompile>
-    <ClCompile Include="scriptService.cpp">
-      <Filter>Source Files\services</Filter>
-    </ClCompile>
-    <ClCompile Include="scriptHandler.cpp">
-      <Filter>Source Files\services</Filter>
-    </ClCompile>
     <ClCompile Include="air.cpp">
       <Filter>Source Files\blocks</Filter>
     </ClCompile>
@@ -171,33 +165,33 @@
     <ClCompile Include="initializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="resourceLocator.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="render.cpp">
+      <Filter>Source Files\services</Filter>
     </ClCompile>
-    <ClCompile Include="widget.cpp">
+    <ClCompile Include="container.cpp">
       <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="itemStackEnt.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="UIService.cpp">
+      <Filter>Source Files\services</Filter>
+    </ClCompile>
+    <ClCompile Include="itemSelectUI.cpp">
+      <Filter>Source Files\UI\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="resources.cpp">
+      <Filter>Source Files\services</Filter>
+    </ClCompile>
+    <ClCompile Include="itemSelectWidget.cpp">
+      <Filter>Source Files\UI\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="testBlockItem.cpp">
+      <Filter>Source Files\items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="serviceLocator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="render.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gridService.h">
-      <Filter>Header Files\services</Filter>
-    </ClInclude>
     <ClInclude Include="imageService.h">
-      <Filter>Header Files\services</Filter>
-    </ClInclude>
-    <ClInclude Include="playerService.h">
-      <Filter>Header Files\services</Filter>
-    </ClInclude>
-    <ClInclude Include="worldService.h">
-      <Filter>Header Files\services</Filter>
-    </ClInclude>
-    <ClInclude Include="consoleService.h">
       <Filter>Header Files\services</Filter>
     </ClInclude>
     <ClInclude Include="world.h">
@@ -254,12 +248,6 @@
     <ClInclude Include="tileService.h">
       <Filter>Header Files\services</Filter>
     </ClInclude>
-    <ClInclude Include="scriptService.h">
-      <Filter>Header Files\services</Filter>
-    </ClInclude>
-    <ClInclude Include="scriptHandler.h">
-      <Filter>Header Files\services</Filter>
-    </ClInclude>
     <ClInclude Include="air.h">
       <Filter>Header Files\blocks</Filter>
     </ClInclude>
@@ -275,11 +263,29 @@
     <ClInclude Include="initializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resourceLocator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="widget.h">
+    <ClInclude Include="container.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="render.h">
+      <Filter>Header Files\services</Filter>
+    </ClInclude>
+    <ClInclude Include="itemStackEnt.h">
+      <Filter>Header Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="UIService.h">
+      <Filter>Header Files\services</Filter>
+    </ClInclude>
+    <ClInclude Include="itemSelectUI.h">
+      <Filter>Header Files\UI\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="resources.h">
+      <Filter>Header Files\services</Filter>
+    </ClInclude>
+    <ClInclude Include="itemSelectWidget.h">
+      <Filter>Header Files\UI\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="testBlockItem.h">
+      <Filter>Header Files\items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,17 +1,16 @@
 #pragma once
-#include "resourceLocator.h"
 #include <vector>
 #include "block.h"
 class blockService
 {
 public:
 	blockService();
-	void update();
-	int registerBlock(block* newBlock);
-	bool registerForUpdates(block* newBlock); //for animated textures
+	static void update();
+	static int registerBlock(block* newBlock);
+	static bool registerForUpdates(block* newBlock); //for animated textures
 	~blockService();
 
-	std::vector<block* > blocks;
+	static std::vector<block* > blocks;
 
 	enum blockType// <- for testing purposes. to be removed after inventory is fully implemented
 	{
@@ -23,9 +22,9 @@ public:
 	};
 
 private:
-	std::vector<block* > updates;
+	static std::vector<block* > updates;
 	//int updatesSize
 	//int blocksSize;
-	resourceLocator* myRL;
+	//resourceLocator myRL;
 };
 

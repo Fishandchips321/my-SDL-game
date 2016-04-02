@@ -7,13 +7,20 @@
 #include <SDL_net.h>
 #include <SDL_mixer.h>
 #include <lua.hpp>
-#include "resourceLocator.h"
+#include "resources.h"
 #include "counter.h"
 #include "air.h"
 #include "testBlock.h"
 #include "block.h"
-#include "toolTip.h"
+#include "player.h"
 #include "grassTile.h"
+#include "blockService.h"
+#include "tileService.h"
+#include "entityService.h"
+#include "itemSelectUI.h"
+#include "itemSelectWidget.h"
+#include "UIService.h"
+
 
 using namespace std;
 
@@ -23,21 +30,19 @@ public:
 	initializer();
 	bool initAll();
 	~initializer();
-	bool initServices();
-	bool loadAllTextures();
 	bool loadAllFonts();
-	bool loadAllSounds();
-	bool loadUI();
+	/*bool loadUI();
 	bool loadBlueUI();
 	bool loadRedUI();
 	bool loadGreenUI();
 	bool loadYellowUI();
-	bool loadGreyUI();
-	bool initRL();
+	bool loadGreyUI();*/
+	bool initRender();
 	bool initPlayer();
 	bool initBlocks();
 	bool initTiles();
+	bool initSDL();
+	bool initUI();
 private:
-	resourceLocator myRL;
 };
 

@@ -1,5 +1,7 @@
 #include "blockService.h"
 
+std::vector<block* > blockService::blocks;
+std::vector<block* > blockService::updates;
 
 blockService::blockService()
 {

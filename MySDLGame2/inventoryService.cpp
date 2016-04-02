@@ -1,5 +1,6 @@
 #include "inventoryService.h"
 
+std::vector<inventory* > inventoryService::inventories;
 
 inventoryService::inventoryService()
 {

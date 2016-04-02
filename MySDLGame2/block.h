@@ -1,6 +1,9 @@
 #pragma once
 #include <SDL.h>
-#include "resourceLocator.h"
+#include "render.h"
+#include "imageService.h"
+#include "inventory.h"
+#include "resources.h"
 class block
 {
 public:
@@ -17,7 +20,6 @@ public:
 	virtual bool onBreak();
 	virtual bool onPlace();
 
-	const int blockWidth = 20, blockHeight = 20;
 	SDL_Rect drawRect;
 	bool solid;
 	int blockID;
@@ -30,13 +32,14 @@ public:
 		int baseHarvestTime;
 	};
 
+	inventory* blockInv;
+
 protected:
-	resourceLocator myRL;
-	bool loadSurface(std::string path);
+	bool loadTexture(std::string path);
 	material blockMaterial;
 	
 private:
-	SDL_Surface* surface;
+	SDL_Texture* texture;
 	bool randomUpdates;
 };
 

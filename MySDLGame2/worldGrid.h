@@ -1,10 +1,8 @@
 #pragma once
 #include <vector>
-#include "tile.h"
-#include "block.h"
-#include "resourceLocator.h"
 #include "chunk.h"
 #include "worldGen.h"
+#include "resources.h"
 class worldGrid
 {
 public:
@@ -25,7 +23,6 @@ public:
 	int gridWidth, gridHeight;
 
 private:
-	resourceLocator myRL;
 	int chunkSize;
 };
 

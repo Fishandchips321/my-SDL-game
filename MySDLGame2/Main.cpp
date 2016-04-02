@@ -46,12 +46,19 @@
 #include <iostream>
 #include <SDL.h>
 #include "game.h"
+#include "initializer.h"
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-	
+	initializer init;
+	game mGame;
+
+	init.initAll();
+	mGame.init();
+	mGame.startGameLoop();
+
 	SDL_Quit();
 
 	return 0;

@@ -9,7 +9,7 @@ chunk::chunk(int x, int y)
 	{
 		std::cout << "[ERROR]: Incorrect positioning data" << std::endl;
 	}
-	int posX = chunkSize * myRL.tileWidth, posY = chunkSize * myRL.tileHeight;
+	int posX = chunkSize * resources::tileWidth, posY = chunkSize * resources::tileHeight;
 
 	if (posX < 0 || posY < 0)
 	{
@@ -34,12 +34,12 @@ void chunk::draw()
 		{
 			if (tiles[i][j].tTile != NULL)
 			{
-				tiles[i][j].tTile->draw(chunkRect.x + (i * myRL.tileWidth), chunkRect.y + (j * myRL.tileHeight));
+				tiles[i][j].tTile->draw(chunkRect.x + (i * resources::tileWidth), chunkRect.y + (j * resources::tileHeight));
 			}
 
 			if (blocks[i][j].tBlock != NULL)
 			{
-				blocks[i][j].tBlock->draw(chunkRect.x + (i * myRL.tileWidth), chunkRect.y + (j * myRL.tileHeight));
+				blocks[i][j].tBlock->draw(chunkRect.x + (i * resources::tileWidth), chunkRect.y + (j * resources::tileHeight));
 			}
 
 		}
@@ -48,9 +48,9 @@ void chunk::draw()
 
 bool chunk::placeBlock(int x, int y, int type)
 {
-	if (blocks[x][y].tBlock == myRL.myBlockService->blocks[myRL.myBlockService->air])//if there isn't a block where the player wants to place one
+	if (blocks[x][y].tBlock == blockService::blocks[blockService::air])//if there isn't a block where the player wants to place one
 	{
-		blocks[x][y].tBlock = myRL.myBlockService->blocks[type]; //get a pointer to the specified block type
+		blocks[x][y].tBlock = blockService::blocks[type]; //get a pointer to the specified block type
 		changed = true;
 		return true;
 	}
@@ -60,11 +60,22 @@ bool chunk::placeBlock(int x, int y, int type)
 	}
 }
 
+bool chunk::placeBlock(int x, int y, block* nBlock)
+{
+	if (blocks[x][y].tBlock == blockService::blocks[blockService::air])//if there isn't a block where the player wants to place one
+	{
+		blocks[x][y].tBlock = nBlock; //the pointer of the supplied block
+		changed = true;
+		return true;
+	}
+	return false;
+}
+
 bool chunk::breakBlock(int x, int y)
 {
-	if (blocks[x][y].tBlock != myRL.myBlockService->blocks[myRL.myBlockService->air])//if there isn't a block where the break request points to (which shouldn't happen mind)
+	if (blocks[x][y].tBlock != blockService::blocks[blockService::air])//if there isn't a block where the break request points to (which shouldn't happen mind)
 	{
-		blocks[x][y].tBlock = myRL.myBlockService->blocks[myRL.myBlockService->air];
+		blocks[x][y].tBlock = blockService::blocks[blockService::air];
 		changed = true;
 		return true;
 	}
@@ -124,8 +135,8 @@ bool chunk::registerEntiy(entity* ent)
 
 bool chunk::loadBlock(int newBlock, int x, int y, int metadata)
 {
-	blocks[x][y].tBlock = myRL.myBlockService->blocks[newBlock];
-	if (blocks[x][y].tBlock == myRL.myBlockService->blocks[newBlock])
+	blocks[x][y].tBlock = blockService::blocks[newBlock];
+	if (blocks[x][y].tBlock == blockService::blocks[newBlock])
 	{
 		blocks[x][y].metadata = metadata;
 		return true;
@@ -138,8 +149,8 @@ bool chunk::loadBlock(int newBlock, int x, int y, int metadata)
 
 bool chunk::loadTile(int newTile, int x, int y, int metadata)
 {
-	tiles[x][y].tTile = myRL.myTileService->tiles[newTile];
-	if (tiles[x][y].tTile == myRL.myTileService->tiles[newTile])
+	tiles[x][y].tTile = tileService::tiles[newTile];
+	if (tiles[x][y].tTile == tileService::tiles[newTile])
 	{
 		tiles[x][y].metadata = metadata;
 		return true;
