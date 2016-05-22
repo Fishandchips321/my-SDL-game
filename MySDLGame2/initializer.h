@@ -20,6 +20,7 @@
 #include "itemSelectUI.h"
 #include "itemSelectWidget.h"
 #include "UIService.h"
+#include "UIConsole.h"
 
 
 using namespace std;
@@ -30,7 +31,6 @@ public:
 	initializer();
 	bool initAll();
 	~initializer();
-	bool loadAllFonts();
 	/*bool loadUI();
 	bool loadBlueUI();
 	bool loadRedUI();

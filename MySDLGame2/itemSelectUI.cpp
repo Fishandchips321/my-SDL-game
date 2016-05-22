@@ -34,7 +34,7 @@ void itemSelectUI::eventUpdate()
 {
 	if (resources::currentEvent->type == SDL_MOUSEWHEEL)
 	{
-		selectedItem += resources::currentEvent->wheel.y;
+		selectedItem -= resources::currentEvent->wheel.y;
 		if (selectedItem > 4)
 		{
 			selectedItem = 0;

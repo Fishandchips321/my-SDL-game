@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "itemStack.h"
-#include "item.h"
 
 class inventory
 {

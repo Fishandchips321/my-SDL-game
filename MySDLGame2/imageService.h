@@ -10,10 +10,9 @@ class imageService
 {
 public:
 	imageService();
-	static SDL_Surface* loadText(std::string text, SDL_Color colour, int font);
+	static SDL_Texture* loadText(std::string text, SDL_Color colour, int font, int size = 1);
 	static SDL_Texture* loadTexture(std::string path);
-	static bool loadFont(std::string path, int size = 10);
-	static void getTextSize(int *w, int *h, int font, std::string text);
+	static TTF_Font* loadFont(std::string path, int size);
 	~imageService();
 
 	enum commonFonts
@@ -21,8 +20,6 @@ public:
 		UIfont,
 		UIfont_thin
 	};
-
-private:
-	static std::vector<TTF_Font* > loadedFonts;
+	static const std::string fonts[];
 };
 

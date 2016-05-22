@@ -5,14 +5,13 @@ class render
 public:
 	render();
 	static bool init();
+	static bool update();
 	static bool drawScreen();
-	//static bool drawSurface(SDL_Surface* surface, SDL_Rect rect);
-	//static bool drawScaledSurface(SDL_Surface* surface, SDL_Rect rect);
-	//static bool drawScaledViewportSurface(SDL_Surface* surface, SDL_Rect stretchRect, SDL_Rect viewport);
-	//static bool drawViewportSurface(SDL_Surface* surface, SDL_Rect viewport, SDL_Rect rect);
 	static bool drawTexture(SDL_Texture* texture, SDL_Rect* rect, SDL_Rect* viewport = NULL);
 	static bool drawSquare(SDL_Rect rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 	static void eventUpdate();
+	static bool focusOnRect(SDL_Rect* entRect);
+
 	static int screenWidth; //640
 	static int screenHeight; //480
 	static int xOffset, yOffset;
@@ -21,6 +20,7 @@ public:
 	static SDL_Renderer* renderer;
 	~render();
 private:
-
+	static SDL_Rect* focusRect;
+	static SDL_Rect midRect;
 };
 

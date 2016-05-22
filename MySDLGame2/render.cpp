@@ -10,6 +10,8 @@ SDL_Surface* render::screenSurface = nullptr;
 SDL_Renderer* render::renderer = nullptr;
 int render::screenWidth = 640;
 int render::screenHeight = 480;
+SDL_Rect* render::focusRect;
+SDL_Rect render::midRect;
 
 render::render()
 {
@@ -27,14 +29,6 @@ bool render::init()
 		return false;
 	}
 
-	// get the screen's surface
-	//screenSurface = SDL_GetWindowSurface(window);
-	//if (screenSurface == NULL) // if the surface wasn't gotten
-	//{
-	//	std::cout << "[ERROR]: an error occured while trying to get the window surface. SDL error " << SDL_GetError() << std::endl;
-	//	return false;
-	//}
-
 	//initialize the renderer
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (renderer == NULL)
@@ -47,6 +41,11 @@ bool render::init()
 		//Initialize renderer color
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xff);
 	}
+	if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) < 0)
+	{
+		std::cout << "[ERROR]: couln't set blendmode" << std::endl;
+		return false;
+	}
 
 	std::cout << "[INFO]: The renderer was successfully initialised" << std::endl;
 	return true;
@@ -58,14 +57,15 @@ bool render::drawScreen()
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xff);
 	SDL_RenderPresent(renderer);
 
-	//if (SDL_UpdateWindowSurface(window) != 0) // draw the surface to the window
-	//{
-	//	std::cout << "[ERROR]: the window wasn't updated SDL_Error: " << SDL_GetError() << std::endl;
-	//	return false;
-	//}
-
-	//SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0x00, 0x00, 0x00)); // clear the screen surface
 	SDL_RenderClear(renderer);
+	return true;
+}
+
+bool render::update()
+{
+	xOffset += midRect.x - (focusRect->x + xOffset);
+	yOffset += midRect.y - (focusRect->y + yOffset);
+
 	return true;
 }
 
@@ -151,6 +151,21 @@ bool render::drawTexture(SDL_Texture* texture, SDL_Rect* rect, SDL_Rect* viewpor
 		return false;
 	}
 	return true;
+}
+
+bool render::focusOnRect(SDL_Rect* rect)
+{
+	if (rect != nullptr)
+	{
+		focusRect = rect;
+
+		midRect.x = ((screenWidth / 2) - (focusRect->w / 2));
+		midRect.y = ((screenHeight / 2) - (focusRect->h / 2));
+		midRect.w = focusRect->w;
+		midRect.h = focusRect->h;
+		return true;
+	}
+	return false;
 }
 
 render::~render()

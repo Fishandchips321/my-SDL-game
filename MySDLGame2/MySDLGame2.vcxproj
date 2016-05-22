@@ -74,13 +74,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="air.cpp" />
+    <ClCompile Include="BCCable.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="blockService.cpp" />
+    <ClCompile Include="BRouter.cpp" />
+    <ClCompile Include="BSwitch.cpp" />
     <ClCompile Include="chunk.cpp" />
+    <ClCompile Include="consoleService.cpp" />
     <ClCompile Include="container.cpp" />
     <ClCompile Include="counter.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="entityService.cpp" />
+    <ClCompile Include="SDLFileHandler.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="grassTile.cpp" />
     <ClCompile Include="imageService.cpp" />
@@ -98,10 +103,13 @@
     <ClCompile Include="render.cpp" />
     <ClCompile Include="resources.cpp" />
     <ClCompile Include="SDLFileService.cpp" />
+    <ClCompile Include="TCP_IP.cpp" />
     <ClCompile Include="testBlock.cpp" />
     <ClCompile Include="testBlockItem.cpp" />
+    <ClCompile Include="textFileHandler.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="tileService.cpp" />
+    <ClCompile Include="UIConsole.cpp" />
     <ClCompile Include="UIService.cpp" />
     <ClCompile Include="world.cpp" />
     <ClCompile Include="worldGen.cpp" />
@@ -109,13 +117,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="air.h" />
+    <ClInclude Include="BCCable.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="blockService.h" />
+    <ClInclude Include="BRouter.h" />
+    <ClInclude Include="BSwitch.h" />
     <ClInclude Include="chunk.h" />
+    <ClInclude Include="consoleService.h" />
     <ClInclude Include="container.h" />
     <ClInclude Include="counter.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="entityService.h" />
+    <ClInclude Include="SDLFileHandler.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="grassTile.h" />
     <ClInclude Include="imageService.h" />
@@ -132,10 +145,13 @@
     <ClInclude Include="render.h" />
     <ClInclude Include="resources.h" />
     <ClInclude Include="SDLFileService.h" />
+    <ClInclude Include="TCP_IP.h" />
     <ClInclude Include="testBlock.h" />
     <ClInclude Include="testBlockItem.h" />
+    <ClInclude Include="textFileHandler.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="tileService.h" />
+    <ClInclude Include="UIConsole.h" />
     <ClInclude Include="UIService.h" />
     <ClInclude Include="world.h" />
     <ClInclude Include="worldGen.h" />

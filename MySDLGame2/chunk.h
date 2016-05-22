@@ -18,6 +18,7 @@ public:
 	bool rightClickBlock(int x, int y);
 	bool loadTile(int tile, int x, int y, int metadata = 0);
 	bool loadBlock(int block, int x, int y, int metadata = 0);
+	bool saveToFile(SDL_RWops* file);
 	bool clearEntities();
 	bool registerEntiy(entity* ent);
 	~chunk();

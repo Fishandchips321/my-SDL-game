@@ -11,7 +11,6 @@ public:
 	static bool registerContainer(container* newCont);
 	~UIService();
 
-private:
 	static std::vector<container* > containers;
 };
 

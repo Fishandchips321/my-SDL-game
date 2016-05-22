@@ -7,8 +7,18 @@ player::player()
 	entityRect.w = 30;
 	entityRect.h = 60;
 	//center the player rect
-	entityRect.x = (render::screenWidth / 2) - (entityRect.w / 2);
-	entityRect.y = (render::screenHeight / 2) - (entityRect.h / 2);
+
+	//entityRect.x = (render::screenWidth / 2) - (entityRect.w / 2);
+	//entityRect.y = (render::screenHeight / 2) - (entityRect.h / 2);
+	entityRect.x = 0;
+	entityRect.y = 0;
+
+	//setup drawRect
+	drawRect.x = 0;
+	drawRect.y = 0;
+	drawRect.w = entityRect.w;
+	drawRect.h = entityRect.h;
+
 	//register the player inventory and get the pointer for it
 	playerInvIndex = inventoryService::registerInventory();
 	playerInv = inventoryService::getPointer(playerInvIndex);
@@ -32,12 +42,17 @@ player::player()
 	entityTexture = imageService::loadTexture("assets/Textures/SaraFullSheet.png");
 
 	speed = 1;
+
+	render::focusOnRect(&entityRect);
 }
 
 void player::draw()
 {
-	render::drawTexture(entityTexture, &entityRect, &viewport);
 
+	drawRect.x = entityRect.x + render::xOffset;
+	drawRect.y = entityRect.y + render::yOffset;
+	render::drawTexture(entityTexture, &drawRect, &viewport);
+	
 	animate();
 }
 
@@ -59,19 +74,21 @@ void player::animate()
 void player::update()
 {
 	move(); //get x and y vel
-	//change the global render offsets
-	render::xOffset -= xVel;
-	render::yOffset -= yVel;
+	//move player
+	entityRect.x += xVel;
+	entityRect.y += yVel;
+
 	//stop the player from going off the screen
-	if (render::xOffset > 0)
+	if (entityRect.x < 0)
 	{
-		render::xOffset = 0;
+		entityRect.x = 0;
 	}
 
-	if (render::yOffset > 0)
+	if (entityRect.y < 0)
 	{
-		render::yOffset = 0;
+		entityRect.y = 0;
 	}
+
 	//update the place timer
 	if (placeTimer > 0)
 		placeTimer -= 1;

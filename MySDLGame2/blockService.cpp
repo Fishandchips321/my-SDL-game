@@ -19,7 +19,6 @@ int blockService::registerBlock(block* newBlock)
 {
 	blocks.push_back(newBlock);
 	newBlock->setID(int(blocks.size() - 1));
-	//blocksSize++;
 	return int(blocks.size());
 }
 

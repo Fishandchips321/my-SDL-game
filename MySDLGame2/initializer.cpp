@@ -27,16 +27,6 @@ bool initializer::initAll()
 	{
 		cout << "[ERROR]: Resource Locator wasn't initialized correctly" << endl;
 	}
-	//load the fonts
-	if (loadAllFonts())
-	{
-		cout << "[INFO]: The fonts were loaded" << endl;
-	}
-	else
-	{
-		cout << "[ERROR]: The fonts wern't loaded" << endl;
-		success = false;
-	}
 	//initialise the block objects
 	if (initBlocks())
 	{
@@ -327,27 +317,6 @@ bool initializer::initSDL()
 //	return loaded;
 //}
 
-bool initializer::loadAllFonts()
-{
-	bool loaded = true;
-	string path = "assets/Fonts/";
-
-	//UI font (the font that came with the UI pack)
-	if (!imageService::loadFont(path + "kenvector_future.ttf", 15))
-	{
-		cout << "[ERROR]: failed to load font " << path + "kenvector_future.ttf" << endl;
-		loaded = false;
-	}
-	//UI font thin
-	if (!imageService::loadFont(path + "kenvector_future_thin.ttf", 10))
-	{
-		cout << "[ERROR]: failed to load font " << path + "kenvector_future_thin.ttf" << endl;
-		loaded = false;
-	}
-
-	return loaded;
-}
-
 bool initializer::initRender()
 {
 	if (!render::init())
@@ -387,13 +356,20 @@ bool initializer::initTiles()
 
 bool initializer::initUI()
 {
-	itemSelectUI* item = new itemSelectUI;
+	itemSelectUI* item = new itemSelectUI();
 
-	if (UIService::registerContainer(item) == false)
+	if (!UIService::registerContainer(item))
 	{
-		std::cout << "[ERROR]: couldn't register container" << std::endl;
+		std::cout << "[ERROR]: couldn't register item selector" << std::endl;
 		return false;
 	}
+
+	UIConsole* UIC = new UIConsole();
+	if (!UIService::registerContainer(UIC))
+	{
+		std::cout << "[ERROR]: couldn't register UI console" << std::endl;
+	}
+
 	return true;
 }
 

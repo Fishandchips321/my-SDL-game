@@ -4,6 +4,7 @@ class grassTile : public tile
 {
 public:
 	grassTile();
+	void update();
 	~grassTile();
 };
 

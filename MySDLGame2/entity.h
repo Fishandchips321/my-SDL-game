@@ -20,5 +20,8 @@ public:
 	int xVel, yVel;
 	int speed;
 	~entity();
+
+protected:
+	SDL_Rect drawRect;
 };
 

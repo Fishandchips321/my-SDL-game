@@ -1,7 +1,7 @@
 #include "imageService.h"
 #include <iostream>
 
-std::vector<TTF_Font* > imageService::loadedFonts;
+const std::string imageService::fonts[] = { "assets/Fonts/kenvector_future.ttf", "assets/Fonts/kenvector_future_thin.ttf" };
 
 imageService::imageService()
 {
@@ -10,65 +10,63 @@ imageService::imageService()
 
 SDL_Texture* imageService::loadTexture(std::string path)
 {
-	SDL_Texture* loadTexture(std::string path);
+	//The final texture
+	SDL_Texture* newTexture = NULL;
+
+	//Load image at specified path
+	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+	if (loadedSurface == NULL)
 	{
-		//The final texture
-		SDL_Texture* newTexture = NULL;
-
-		//Load image at specified path
-		SDL_Surface* loadedSurface = IMG_Load(path.c_str());
-		if (loadedSurface == NULL)
-		{
-			std::cout << "[ERROR]: Unable to load image " << path << "! SDL_image Error: " << IMG_GetError() << std::endl;
-		}
-		else
-		{
-			//Create texture from surface pixels
-			newTexture = SDL_CreateTextureFromSurface(render::renderer, loadedSurface);
-			if (newTexture == NULL)
-			{
-				std::cout << "[ERROR]: Unable to create texture from " << path << "!SDL Error : " << SDL_GetError() << std::endl;
-			}
-
-			//Get rid of old loaded surface
-			SDL_FreeSurface(loadedSurface);
-		}
-		std::cout << "[INFO]: The image \"" << path << "\" was loaded and made into a texture" << std::endl;
-		return newTexture;
+		std::cout << "[ERROR]: Unable to load image " << path << "! SDL_image Error: " << IMG_GetError() << std::endl;
 	}
+	else
+	{
+		//Create texture from surface pixels
+		newTexture = SDL_CreateTextureFromSurface(render::renderer, loadedSurface);
+		if (newTexture == NULL)
+		{
+			std::cout << "[ERROR]: Unable to create texture from " << path << "!SDL Error : " << SDL_GetError() << std::endl;
+		}
+
+		//Get rid of old loaded surface
+		SDL_FreeSurface(loadedSurface);
+	}
+	std::cout << "[INFO]: The image \"" << path << "\" was loaded and made into a texture" << std::endl;
+	return newTexture;
 }
 
-SDL_Surface* imageService::loadText(std::string text, SDL_Color colour, int font)
+SDL_Texture* imageService::loadText(std::string text, SDL_Color colour, int font, int size)
 {
-	SDL_Surface* textSurface;
-	textSurface = TTF_RenderText_Solid(loadedFonts[font], text.c_str(), colour);
+	TTF_Font* Tfont = loadFont(fonts[font], size);
+
+	SDL_Surface* textSurface = NULL;
+	SDL_Texture* textTexture = NULL;
+	textSurface = TTF_RenderText_Solid(Tfont, text.c_str(), colour);
 	if (textSurface == NULL)
 	{
 		std::cout << "[ERROR]: couldn't make text surface\"" << text << "\" with font " << font << ". SDL_Error: " << SDL_GetError() << std::endl;
 		return false;
 	}
-
-	SDL_ConvertSurface(textSurface, render::screenSurface->format, NULL);//optimise the surface
-
-	return textSurface;
-}
-
-bool imageService::loadFont(std::string path, int size)
-{
-	loadedFonts.push_back(TTF_OpenFont(path.c_str(), size));
-	if (loadedFonts.back() == NULL)
+	textTexture = SDL_CreateTextureFromSurface(render::renderer, textSurface);
+	
+	if (textTexture == nullptr)
 	{
-		std::cout << "[ERROR]: Couldn't load font \"" << path << "\". SDL_ERROR: " << SDL_GetError() << std::endl;
+		std::cout << "[ERROR]: couldn't get texture from text surface. SDL_Error: " << SDL_GetError() << std::endl;
 		return false;
 	}
-	return true;
+
+	return textTexture;
 }
 
-void imageService::getTextSize(int *w, int *h, int font, std::string text)
+TTF_Font* imageService::loadFont(std::string path, int size)
 {
-	TTF_SizeText(loadedFonts[font], text.c_str(), w, h);
-}
+	TTF_Font* font = TTF_OpenFont(path.c_str(), size);
 
+	if (font != nullptr)
+		return font;
+
+	return nullptr;
+}
 
 	imageService::~imageService()
 {

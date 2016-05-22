@@ -21,9 +21,6 @@ bool game::init()
 
 bool game::startGameLoop()
 {
-	//SDL_Rect rectangle;
-	//SDL_Surface* surface = mySL->myImageService.surfaces[0];
-	//rectangle.x = 0; rectangle.y = 0; rectangle.w = 100; rectangle.h = 100;
 	bool quit = false;
 	std::cout << "[INFO]: Entering the game loop" << std::endl;
 
@@ -63,7 +60,7 @@ bool game::startGameLoop()
 		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
 		if (avgFPS > 2000000)
 		{
-			//avgFPS = 0;
+			avgFPS = 0;
 		}
 
 		//output the agerage fps to the console
@@ -124,6 +121,7 @@ void game::update()
 		UIService::update();
 		break;
 	}
+	render::update();
 }
 
 void game::draw()

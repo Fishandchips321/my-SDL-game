@@ -31,9 +31,9 @@ void entityService::draw()
 	//if the entity is on the screen draw it
 	for (int i = 0; i < int(entities.size()); i++) //doesn't count the element at value "size"
 	{
-		if (entities[i]->entityRect.x >= 0 && (entities[i]->entityRect.x + entities[i]->entityRect.w) <= render::screenWidth)
+		if (entities[i]->entityRect.x + render::xOffset >= 0 && ((entities[i]->entityRect.x + render::xOffset) + entities[i]->entityRect.w) <= render::screenWidth)
 		{
-			if (entities[i]->entityRect.y >= 0 && (entities[i]->entityRect.y + entities[i]->entityRect.h) <= render::screenHeight)
+			if (entities[i]->entityRect.y + render::yOffset >= 0 && ((entities[i]->entityRect.y + render::yOffset) + entities[i]->entityRect.h) <= render::screenHeight)
 			{
 				entities[i]->draw();
 			}

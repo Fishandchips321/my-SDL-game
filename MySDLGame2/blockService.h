@@ -15,16 +15,10 @@ public:
 	enum blockType// <- for testing purposes. to be removed after inventory is fully implemented
 	{
 		air,
-		test,
-		wood,
-		stone,
-		workbench
+		test
 	};
 
 private:
 	static std::vector<block* > updates;
-	//int updatesSize
-	//int blocksSize;
-	//resourceLocator myRL;
 };
 

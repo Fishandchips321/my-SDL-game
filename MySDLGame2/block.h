@@ -2,14 +2,13 @@
 #include <SDL.h>
 #include "render.h"
 #include "imageService.h"
-#include "inventory.h"
 #include "resources.h"
 class block
 {
 public:
 	block();
 	virtual void update();
-	virtual void draw(int x, int y);
+	virtual void draw(int x, int y, int metadata);
 	void setID(int ID);
 	~block();
 
@@ -19,24 +18,16 @@ public:
 	virtual bool onMouseHover();
 	virtual bool onBreak();
 	virtual bool onPlace();
+	virtual bool save(std::string path, int x, int y);
 
 	SDL_Rect drawRect;
 	bool solid;
 	int blockID;
 
-	struct material
-	{
-		//serviceLocator::materialTypes type;
-		//serviceLocator::toolTypes effectiveTool;
-		int harvestLevel;
-		int baseHarvestTime;
-	};
-
-	inventory* blockInv;
+	bool ent;
 
 protected:
 	bool loadTexture(std::string path);
-	material blockMaterial;
 	
 private:
 	SDL_Texture* texture;

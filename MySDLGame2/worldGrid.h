@@ -10,6 +10,7 @@ public:
 	void update();
 	void draw();
 	bool loadGridFromText(std::string path);
+	bool saveGridToFile(SDL_RWops* file);
 	bool useDefaultGrid();
 	bool placeBlock(int x, int y, int type);
 	bool placeBlockEntity(int x, int y, block* blockEntity);

@@ -39,7 +39,7 @@ void chunk::draw()
 
 			if (blocks[i][j].tBlock != NULL)
 			{
-				blocks[i][j].tBlock->draw(chunkRect.x + (i * resources::tileWidth), chunkRect.y + (j * resources::tileHeight));
+				blocks[i][j].tBlock->draw(chunkRect.x + (i * resources::tileWidth), chunkRect.y + (j * resources::tileHeight), blocks[i][j].metadata);
 			}
 
 		}
@@ -48,6 +48,10 @@ void chunk::draw()
 
 bool chunk::placeBlock(int x, int y, int type)
 {
+
+	if (x < 0 || y < 0 || x > 9 || y > 9)
+		return false;
+
 	if (blocks[x][y].tBlock == blockService::blocks[blockService::air])//if there isn't a block where the player wants to place one
 	{
 		blocks[x][y].tBlock = blockService::blocks[type]; //get a pointer to the specified block type
@@ -62,6 +66,10 @@ bool chunk::placeBlock(int x, int y, int type)
 
 bool chunk::placeBlock(int x, int y, block* nBlock)
 {
+
+	if (x < 0 || y < 0 || x > 9 || y > 9)
+		return false;
+
 	if (blocks[x][y].tBlock == blockService::blocks[blockService::air])//if there isn't a block where the player wants to place one
 	{
 		blocks[x][y].tBlock = nBlock; //the pointer of the supplied block
@@ -73,6 +81,10 @@ bool chunk::placeBlock(int x, int y, block* nBlock)
 
 bool chunk::breakBlock(int x, int y)
 {
+
+	if (x < 0 || y < 0 || x > 9 || y > 9)
+		return false;
+
 	if (blocks[x][y].tBlock != blockService::blocks[blockService::air])//if there isn't a block where the break request points to (which shouldn't happen mind)
 	{
 		blocks[x][y].tBlock = blockService::blocks[blockService::air];
@@ -89,6 +101,10 @@ bool chunk::breakBlock(int x, int y)
 
 bool chunk::leftClickBlock(int x, int y)
 {
+
+	if (x < 0 || y < 0 || x > 9 || y > 9)
+		return false;
+
 	if (blocks[x][y].tBlock != NULL)
 	{
 		//return blocks[x][y]->onLeftClick();
@@ -99,6 +115,10 @@ bool chunk::leftClickBlock(int x, int y)
 
 bool chunk::rightClickBlock(int x, int y)
 {
+
+	if (x < 0 || y < 0 || x > 9 || y > 9)
+		return false;
+
 	if (blocks[x][y].tBlock != NULL)
 	{
 		//return blocks[x][y]->onRightClick();
@@ -159,6 +179,11 @@ bool chunk::loadTile(int newTile, int x, int y, int metadata)
 	{
 		return false;
 	}
+}
+
+bool chunk::saveToFile(SDL_RWops* file)
+{
+	return false;
 }
 
 chunk::~chunk()

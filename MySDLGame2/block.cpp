@@ -5,7 +5,7 @@ block::block()
 	texture = imageService::loadTexture("assets/Textures/missing texture.png");
 }
 
-void block::draw(int x, int y)
+void block::draw(int x, int y, int metadata)
 {
 	drawRect.x = x + render::xOffset;
 	drawRect.y = y + render::yOffset;
@@ -65,6 +65,11 @@ bool block::loadTexture(std::string path)
 void block::setID(int ID)
 {
 	blockID = ID;
+}
+
+bool block::save(std::string path, int x, int y)
+{
+	return true;
 }
 
 block::~block()

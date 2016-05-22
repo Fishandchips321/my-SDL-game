@@ -5,7 +5,7 @@ air::air()
 {
 }
 
-void air::draw(int x, int y)
+void air::draw(int x, int y, int metadata)
 {
 }
 

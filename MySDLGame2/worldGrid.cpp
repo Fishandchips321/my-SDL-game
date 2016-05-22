@@ -17,17 +17,22 @@ void worldGrid::update()
 
 }
 
-bool worldGrid::placeBlock(int x, int y, int type)//if false, the player class will try to right click the block
+bool worldGrid::placeBlock(int x, int y, int type)
 {
 	if (x > (gridWidth * 10) * resources::tileWidth || y > (gridHeight * 10) * resources::tileHeight)
 	{
 		return false;
 	}
 
+	if (x < 0 || y < 0)
+		return false;
+
 	int chunkX, chunkY;
 
 	getChunkBlock(&x, &y, &chunkX, &chunkY);
 
+	if (chunkX < 0 || chunkY < 0)
+		return false;
 
 	return chunkGrid[chunkX][chunkY]->placeBlock(x, y, type);
 }
@@ -39,9 +44,15 @@ bool worldGrid::placeBlockEntity(int x, int y, block* blockEntity)
 		return false;
 	}
 
+	if (x < 0 || y < 0)
+		return false;
+
 	int chunkX, chunkY;
 
 	getChunkBlock(&x, &y, &chunkX, &chunkY);
+
+	if (chunkX < 0 || chunkY < 0)
+		return false;
 
 	return chunkGrid[chunkX][chunkY]->placeBlock(x, y, blockEntity);
 }
@@ -53,9 +64,15 @@ bool worldGrid::breakBlock(int x, int y)
 		return false;
 	}
 
+	if (x < 0 || y < 0)
+		return false;
+
 	int chunkX, chunkY;
 
 	getChunkBlock(&x, &y, &chunkX, &chunkY);
+
+	if (chunkX < 0 || chunkY < 0)
+		return false;
 
 	return chunkGrid[chunkX][chunkY]->breakBlock(x, y);
 	//return false;
@@ -68,9 +85,15 @@ bool worldGrid::leftClickBlock(int x, int y)
 		return false;
 	}
 
+	if (x < 0 || y < 0)
+		return false;
+
 	int chunkX, chunkY;
 
 	getChunkBlock(&x, &y, &chunkX, &chunkY);
+
+	if (chunkX < 0 || chunkY < 0)
+		return false;
 
 	return chunkGrid[chunkX][chunkY]->leftClickBlock(x, y);
 }
@@ -83,9 +106,15 @@ bool worldGrid::rightClickBlock(int x, int y)
 		return false;
 	}
 
+	if (x < 0 || y < 0)
+		return false;
+
 	int chunkX, chunkY;
 
 	getChunkBlock(&x, &y, &chunkX, &chunkY);
+
+	if (chunkX < 0 || chunkY < 0)
+		return false;
 
 	return chunkGrid[chunkX][chunkY]->rightClickBlock(x, y);
 }
@@ -101,6 +130,19 @@ void worldGrid::getChunkBlock(int *x, int *y, int *chunkX, int *chunkY)
 
 	*chunkX = *x / chunkSize;
 	*chunkY = *y / chunkSize;
+
+	if (*chunkX >= chunkGrid.size())
+	{
+		*chunkX = -1;
+		return;
+	}
+	else if (*chunkY >= chunkGrid[*chunkX].size())
+	{
+		*chunkY = -1;
+		return;
+	}
+
+
 
 	*x -= chunkGrid[*chunkX][*chunkY]->chunkRect.x / resources::tileWidth;
 	*y -= chunkGrid[*chunkX][*chunkY]->chunkRect.y / resources::tileHeight;
@@ -156,6 +198,22 @@ bool worldGrid::loadGridFromText(std::string path)
 			}
 		}
 	}
+}
+
+bool worldGrid::saveGridToFile(SDL_RWops* file)
+{
+	for (size_t x = 0; x < chunkGrid.size(); x++)
+	{
+		for (size_t y = 0; y < chunkGrid[x].size(); y++)
+		{
+			if (!chunkGrid[x][y]->saveToFile(file))
+			{
+				std::cout << "[ERROR]: chunk " << x << " " << y << " couldn't be saved" << std::endl;
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 bool worldGrid::useDefaultGrid() //for testing purposes

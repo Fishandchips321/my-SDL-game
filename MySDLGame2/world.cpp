@@ -43,7 +43,27 @@ bool world::loadWorld(std::string name)
 
 bool world::saveWorld()
 {
-	return false;
+	std::stringstream path;
+	std::stringstream sFile;
+	path << "saves/" << worldName << "/grid";
+	
+	for (size_t x = 0; x < grids.size(); x++)
+	{
+		sFile << path.str() << x << ".sav";
+		SDL_RWops* file = SDL_RWFromFile(sFile.str().c_str(), "w+b");
+		if (file == nullptr)
+		{
+			//consoleService::error("file " + sFile.str() + " couldn't be opened. SDL_Error " + SDL_GetError());
+			return false;
+		}
+		if (!grids[x]->saveGridToFile(file))
+		{
+			std::cout << "[ERROR]: grid " << x << " couldn't be saved" << std::endl;
+			return false;
+		}
+		SDL_RWclose(file);
+	}
+	return true;
 }
 
 bool world::placeBlock(int x, int y, int type)

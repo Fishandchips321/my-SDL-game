@@ -9,7 +9,7 @@ public:
 	virtual bool onLeftClick();
 	virtual bool onDrop();
 	virtual int getMetadata(int metadata);
-	virtual bool onPlace(int x, int y);
+	virtual bool onPlace(int x, int y); //don't include world.h; creates a long include loop
 	~item();
 
 	double weight;
